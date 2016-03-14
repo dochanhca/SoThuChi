@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Sổ Thu Chi</string>
+    <string name="updating">Đang cập nhật nội dung</string>
+    <string name="tab1">Ghi chép</string>
+    <string name="tab2">Tài khoản</string>
+    <string name="tab3">Hạn mức chi</string>
+    <string name="tab4">Báo cáo</string>
+    <string name="tab5">Tiện ích</string>
+</resources>
