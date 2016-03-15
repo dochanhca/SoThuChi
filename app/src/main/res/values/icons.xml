@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ic_tab_note">&#xf044;</string>
+    <string name="ic_tab_account">&#xf07b;</string>
+    <string name="ic_tab_limit">&#xf1ec;</string>
+    <string name="ic_tab_report">&#xf200;</string>
+    <string name="ic_tab_utility">&#xf0c9;</string>
+
+</resources>

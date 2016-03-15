@@ -14,6 +14,11 @@ import com.example.anhlamrduc.sothuchi.R;
 public class ReportActivity extends Fragment {
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate layout for AccountActivity
         View v = inflater.inflate(R.layout.report_layout, container, false);

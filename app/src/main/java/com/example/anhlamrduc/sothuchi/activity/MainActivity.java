@@ -1,10 +1,16 @@
 package com.example.anhlamrduc.sothuchi.activity;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
+import com.example.anhlamrduc.sothuchi.helper.FontManager;
 
 public class MainActivity extends FragmentActivity {
 
@@ -19,35 +25,63 @@ public class MainActivity extends FragmentActivity {
 
     }
 
+    /**
+     * Initiate 5 tab
+     */
     private void initiateTab() {
+
+        //
         fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         fragmentTabHost.setup(this, getSupportFragmentManager(), R.id.real_tab_content);
 
-        //Kh?i t?o tab Ghi chép
+        //Initiate Note tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("noteTab").
-                setIndicator(getResources().getString(R.string.tab1),
-                        getResources().getDrawable(R.drawable.ic_tab_note)),
+                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
+                                R.string.tab1, R.string.ic_tab_note)),
                 NoteActivity.class, null);
-        //Kh?i t?o tab Tài kho?n
+        //Initiate Account tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("accountTab").
-                setIndicator(getResources().getString(R.string.tab2),
-                        getResources().getDrawable(R.drawable.ic_tab_account)),
+                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
+                                R.string.tab2, R.string.ic_tab_account)),
                 AccountActivity.class, null);
-        //Kh?i t?o tab h?n m?c chi
+        //Initiate limit tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("limitTab").
-                setIndicator(getResources().getString(R.string.tab3),
-                        getResources().getDrawable(R.drawable.ic_tab_limit)),
+                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
+                                R.string.tab3, R.string.ic_tab_limit)),
                 LimitActivity.class, null);
-        //Kh?i t?o tab báo cáo
+        //Initiate Report tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("reportTab").
-                setIndicator(getResources().getString(R.string.tab4),
-                        getResources().getDrawable(R.drawable.ic_tab_report)),
+                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
+                                R.string.tab4, R.string.ic_tab_report)),
                 ReportActivity.class, null);
-        //Kh?i t?o tab ti?n ích
+        //Initiate Utility tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("utilityTab").
-                setIndicator(getResources().getString(R.string.tab5),
-                        getResources().getDrawable(R.drawable.ic_tab_utinity)),
+                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
+                                R.string.tab1, R.string.ic_tab_utility)),
                 UtilitiesActivity.class, null);
 
+        //
+
+    }
+
+    /**
+     * Customize the tab widget
+     * @param context
+     * @param title
+     * @param icon
+     * @return
+     */
+    private View getTabIndicator(Context context, int title, int icon) {
+
+        //Use font awesome
+        Typeface iconFont = FontManager.getTypeface(getApplicationContext(), FontManager.FONTAWESOME);
+        FontManager.markAsIconContainer(findViewById(R.id.ll_tab_indicator), iconFont);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.tab_indicator, null);
+        TextView txtImage = (TextView) view.findViewById(R.id.txt_image);
+        txtImage.setText(icon);
+        TextView txtName = (TextView) view.findViewById(R.id.txt_name);
+        txtName.setText(title);
+        return view;
     }
 }
