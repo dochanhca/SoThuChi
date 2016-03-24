@@ -1,28 +1,59 @@
 package com.example.anhlamrduc.sothuchi.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
+import com.example.anhlamrduc.sothuchi.adapter.MyPagerAdapter;
+import com.example.anhlamrduc.sothuchi.db.AccountController;
+import com.example.anhlamrduc.sothuchi.fragment.AccountFragment;
+import com.example.anhlamrduc.sothuchi.fragment.LimitFragment;
+import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
+import com.example.anhlamrduc.sothuchi.fragment.ReportFragment;
+import com.example.anhlamrduc.sothuchi.fragment.UtilitiesFragment;
+import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
 
-public class MainActivity extends FragmentActivity {
+import java.util.ArrayList;
 
-    private static final String MAIN = "Main activity: ";
-    FragmentTabHost fragmentTabHost;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity {
+
+    public static final String MAIN = "Main activity: ";
+    public static final String LIST_ACCOUNT_FROM_MAIN = "list of account";
+    public static final String TOTAL_MONEY_FROM_MAIN = "total money";
+    public static final String ARR_ACCOUNT_NAME_FROM_MAIN = "account name";
+    private AccountController db_account;
+    private Bundle bundle_to_note;
+    private Bundle bundle_to_account;
+    private Bundle bundle_to_limit;
+    private Bundle bundle_to_report;
+    private Bundle bundle_to_utility;
+
+    @Bind(R.id.viewpager)
+    ViewPager viewPager;
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        db_account = new AccountController(this);
+        //Send data to Fragment via bundle
+        putBundle();
 
-        initiateTab();
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
+
         Log.e(MAIN, "onCreate");
     }
 
@@ -60,64 +91,101 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.e(MAIN, "onDestroy");
+        db_account.close();
     }
 
     /**
-     * Initiate 5 tab
+     * Send data to Fragment
      */
-    private void initiateTab() {
-
+    private void putBundle() {
         //
-        fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        fragmentTabHost.setup(this, getSupportFragmentManager(), R.id.real_tab_content);
-
-        //Initiate Note tab
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("noteTab").
-                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab1, R.drawable.ic_tab_note)),
-                NoteActivity.class, null);
-        //Initiate Account tab
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("accountTab").
-                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab2, R.drawable.ic_tab_account)),
-                AccountActivity.class, null);
-        //Initiate limit tab
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("limitTab").
-                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab3, R.drawable.ic_tab_limit)),
-                LimitActivity.class, null);
-        //Initiate Report tab
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("reportTab").
-                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab4, R.drawable.ic_tab_report)),
-                ReportActivity.class, null);
-        //Initiate Utility tab
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("utilityTab").
-                        setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab5, R.drawable.ic_tab_utility)),
-                UtilitiesActivity.class, null);
-
+        bundle_to_account = new Bundle();
+        bundle_to_account.putParcelableArrayList(LIST_ACCOUNT_FROM_MAIN, getListAccount());
+        bundle_to_account.putDouble(TOTAL_MONEY_FROM_MAIN, getSumMoney());
         //
-
+        bundle_to_note = new Bundle();
+        bundle_to_note.putStringArray(ARR_ACCOUNT_NAME_FROM_MAIN, getAccountName());
+        //
     }
 
     /**
-     * Customize the tab widget
+     * Add Fragment to ViewPagerAdapter
+     * @param viewPager
+     */
+    private void setupViewPager(ViewPager viewPager) {
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        myPagerAdapter.addFrag(new NoteFragment(), "Ghi chép", bundle_to_note);
+        myPagerAdapter.addFrag(new AccountFragment(), "Tài khoản", bundle_to_account);
+        myPagerAdapter.addFrag(new LimitFragment(), "Hạn mức chi", bundle_to_limit);
+        myPagerAdapter.addFrag(new ReportFragment(), "Báo cáo", bundle_to_report);
+        myPagerAdapter.addFrag(new UtilitiesFragment(), "Tiện ích", bundle_to_utility);
+        viewPager.setAdapter(myPagerAdapter);
+    }
+
+    /**
+     * Customize Title And Icon for Tabs
+     */
+    private void setupTabIcons() {
+        TextView tab_note = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+        tab_note.setText("Ghi chép");
+        tab_note.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_note, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(R.layout.tab_layout_account);
+
+        TextView tab_account = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+        tab_account.setText("Tài khoản");
+        tab_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_account, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(R.layout.tab_layout_account);
+
+        TextView tab_limit = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+        tab_limit.setText("Hạn mức chi");
+        tab_limit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_limit, 0, 0);
+        tabLayout.getTabAt(2).setCustomView(R.layout.tab_layout_account);
+
+        TextView tab_report = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+        tab_report.setText("Báo cáo");
+        tab_report.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_report, 0, 0);
+        tabLayout.getTabAt(3).setCustomView(R.layout.tab_layout_account);
+
+        TextView tab_utility = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+        tab_utility.setText("Tiện ích");
+        tab_utility.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_utility, 0, 0);
+        tabLayout.getTabAt(4).setCustomView(R.layout.tab_layout_account);
+    }
+
+
+    /**
+     * Retrieve all account from TaiKhoan Table
      *
-     * @param context
-     * @param title
-     * @param icon
      * @return
      */
-    private View getTabIndicator(Context context, int title, int icon) {
+    private String[] getAccountName() {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.tab_indicator, null);
-        ImageView imgIcon = (ImageView) view.findViewById(R.id.img_icon);
-        imgIcon.setImageResource(icon);
-        TextView txtName = (TextView) view.findViewById(R.id.txt_name);
-        txtName.setText(title);
-        return view;
+        ArrayList<TaiKhoan> arr = db_account.getListAccount();
+        String accountName[] = new String[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            accountName[i] = arr.get(i).getTenTaiKhoan();
+        }
+        return accountName;
     }
 
+    /**
+     * Retrieve all account from TaiKhoan Table
+     *
+     * @return
+     */
+    private ArrayList<TaiKhoan> getListAccount() {
 
+        ArrayList<TaiKhoan> arr = db_account.getListAccount();
+        return arr;
+    }
+
+    /**
+     * Get sum currently money
+     *
+     * @return sum
+     */
+    private double getSumMoney() {
+        db_account = new AccountController(this);
+        return db_account.getSumMoney();
+    }
 }

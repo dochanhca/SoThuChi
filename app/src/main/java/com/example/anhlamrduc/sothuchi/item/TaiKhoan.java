@@ -1,9 +1,12 @@
 package com.example.anhlamrduc.sothuchi.item;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by AnhlaMrDuc on 20-Mar-16.
  */
-public class TaiKhoan {
+public class TaiKhoan implements Parcelable {
 
     private int maTaiKhoan;
     private String tenTaiKhoan;
@@ -70,5 +73,20 @@ public class TaiKhoan {
         this.soTienHienCo = soTienHienCo;
         this.ghiChu = ghiChu;
         this.loaiTaiKhoan = loaiTaiKhoan;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(maTaiKhoan);
+        dest.writeString(tenTaiKhoan);
+        dest.writeDouble(soTienBanDau);
+        dest.writeDouble(soTienHienCo);
+        dest.writeString(ghiChu);
+        dest.writeValue(loaiTaiKhoan);
     }
 }

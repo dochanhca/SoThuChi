@@ -1,56 +1,70 @@
-package com.example.anhlamrduc.sothuchi.activity;
+package com.example.anhlamrduc.sothuchi.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.anhlamrduc.sothuchi.R;
+import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.adapter.ListAccountAdapter;
-import com.example.anhlamrduc.sothuchi.db.AccountController;
 import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
 import com.example.anhlamrduc.sothuchi.utility.Currency;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by AnhlaMrDuc on 14-Mar-16.
  */
-public class AccountActivity extends ListFragment {
+public class AccountFragment extends ListFragment {
 
-    private ListView lvAccount;
-    private TextView txtSum;
+    @Bind(android.R.id.list)
+    ListView lvAccount;
+    @Bind(R.id.txt_sum)
+    TextView txtSum;
 
     private ArrayList<TaiKhoan> arrAccount;
+    private double totalMoney;
+    private double money;
+    private String accountName;
     private ListAccountAdapter listAccountAdapter;
-    private AccountController db;
+    private String[] arrAccountName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new AccountController(getActivity());
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate layout for AccountActivity
+        //Receive a Bundle from main activity
+        arrAccount = getArguments().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_MAIN);
+        totalMoney = getArguments().getDouble(MainActivity.TOTAL_MONEY_FROM_MAIN);
+        //Receive a Bundle from note fragment
+
+//        money = getArguments().getDouble(NoteFragment.MONEY_FROM_NOTE);
+//        accountName = getArguments().getString(NoteFragment.ACCOUNT_NAME_FROM_NOTE);
+        // Inflate layout for AccountFragment
         View v = inflater.inflate(R.layout.account_layout, container, false);
+        ButterKnife.bind(this, v);
+        Toast.makeText(getContext(), accountName + " add " + money + "đ", Toast.LENGTH_LONG).show();
 
-
-        txtSum = (TextView) v.findViewById(R.id.txt_sum);
-        String sumMoney = Currency.getCurrency(getSumMoney());
+        String sumMoney = Currency.getCurrency(totalMoney);
         txtSum.setText("Tổng còn: " + sumMoney + " đ");
-        lvAccount = (ListView) v.findViewById(android.R.id.list);
-        arrAccount = getListAccount();
         listAccountAdapter = new ListAccountAdapter(getActivity(), arrAccount);
         lvAccount.setAdapter(listAccountAdapter);
-
+        Log.e(MainActivity.MAIN, "Account Fragment created");
         return v;
     }
 
@@ -63,28 +77,7 @@ public class AccountActivity extends ListFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        db.close();
-    }
+        ButterKnife.unbind(this);
 
-    /**
-     * Retrieve all account from TaiKhoan Table
-     *
-     * @return
-     */
-    private ArrayList<TaiKhoan> getListAccount() {
-
-        ArrayList<TaiKhoan> arr = db.getListAccount();
-        return arr;
-
-    }
-
-    /**
-     * Get sum currently money
-     *
-     * @return sum
-     */
-    private double getSumMoney() {
-        db = new AccountController(getContext());
-        return db.getSumMoney();
     }
 }

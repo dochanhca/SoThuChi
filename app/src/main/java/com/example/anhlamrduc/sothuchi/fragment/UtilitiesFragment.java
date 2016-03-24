@@ -1,4 +1,4 @@
-package com.example.anhlamrduc.sothuchi.activity;
+package com.example.anhlamrduc.sothuchi.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,8 @@ import com.example.anhlamrduc.sothuchi.R;
 /**
  * Created by AnhlaMrDuc on 14-Mar-16.
  */
-public class NoteActivity extends Fragment {
+public class UtilitiesFragment extends Fragment {
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,8 +21,8 @@ public class NoteActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate layout for NoteActivity
-        View v = inflater.inflate(R.layout.note_layout, container, false);
+        // Inflate layout for AccountFragment
+        View v = inflater.inflate(R.layout.utilities_layout, container, false);
 
         return v;
     }

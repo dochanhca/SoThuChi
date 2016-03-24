@@ -106,7 +106,7 @@ public class AccountController extends SQLiteAssetHelper {
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
-            String sql = "SELECT SUM(" +KEY_CURRENT_MONEY+ " AS Sum_MoNey FROM "+DB_TABLE_LOAITK;
+            String sql = "SELECT SUM(" + KEY_CURRENT_MONEY + ") AS Sum_MoNey FROM " + DB_TABLE;
 
             Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {

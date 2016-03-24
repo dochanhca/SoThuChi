@@ -6,4 +6,22 @@
     <string name="tab3">Hạn mức chi</string>
     <string name="tab4">Báo cáo</string>
     <string name="tab5">Tiện ích</string>
+    <string name="amount">Số tiền</string>
+    <string name="tab_note">note_tab</string>
+    <string name="tab_account">account_tab</string>
+    <string name="tab_limit">limit_tab</string>
+    <string name="tab_report">report_tab</string>
+    <string name="tab_utility">utility_tab</string>
+    <string-array name="note_action">
+        <item>Chi tiền</item>
+        <item>Thu tiền</item>
+        <item>Chuyển khoản</item>
+        <item>Ghi theo tiền còn</item>
+    </string-array>
+    <string-array name="note_action_detail">
+        <item>Khi chi tiêu, cho vay, trả nợ.</item>
+        <item>Khi có khoản thu nhập, đi vay, thu nợ.</item>
+        <item>Chuyển tiền giữa các tài khoản trong Sổ của bạn.</item>
+        <item>Tính và ghi số tiền đã chi/thu theo số tiền đang còn.</item>
+    </string-array>
 </resources>

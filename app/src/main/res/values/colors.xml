@@ -7,4 +7,6 @@
     <color name="normal">#f6f6f6</color>
     <color name="background">#e1e1e1</color>
     <color name="header">#01a6a0</color>
+    <color name="btn_write">#60b4b4</color>
+    <color name="btn_add">#24825e</color>
 </resources>

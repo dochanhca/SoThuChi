@@ -1,10 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_list_account"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/header"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_5dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_transaction_history"
+
+            />
+
+        <Spinner
+            android:id="@+id/spn_note_action"
+            style="@style/text_header"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="4"
+            android:background="@color/btn_write"></Spinner>
+
+        <Button
+            android:id="@+id/btn_write"
+            style="@style/text_header"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="@dimen/margin_5dp"
+            android:layout_marginLeft="@dimen/margin_5dp"
+            android:layout_weight="1"
+            android:background="@color/btn_write"
+            android:gravity="center"
+            android:text="Ghi" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edt_amount"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/white"
+        android:hint="@string/amount"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spn_account"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@android:color/white"></Spinner>
+
+    <Button
+        android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/updating"/>
+        android:background="@color/btn_add"
+        android:text="Ghi"
+        android:gravity="center"
+        style="@style/text_header"
+        android:textAllCaps="false" />
 
 </LinearLayout>

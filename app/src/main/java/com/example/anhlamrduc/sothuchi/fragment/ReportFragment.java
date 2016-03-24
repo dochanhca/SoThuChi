@@ -1,4 +1,4 @@
-package com.example.anhlamrduc.sothuchi.activity;
+package com.example.anhlamrduc.sothuchi.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,7 @@ import com.example.anhlamrduc.sothuchi.R;
 /**
  * Created by AnhlaMrDuc on 14-Mar-16.
  */
-public class LimitActivity extends Fragment {
+public class ReportFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,8 +20,8 @@ public class LimitActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate layout for AccountActivity
-        View v = inflater.inflate(R.layout.limit_layout, container, false);
+        // Inflate layout for AccountFragment
+        View v = inflater.inflate(R.layout.report_layout, container, false);
 
         return v;
     }
