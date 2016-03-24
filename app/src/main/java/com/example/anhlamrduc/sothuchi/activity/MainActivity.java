@@ -1,19 +1,20 @@
 package com.example.anhlamrduc.sothuchi.activity;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
-import com.example.anhlamrduc.sothuchi.helper.FontManager;
 
 public class MainActivity extends FragmentActivity {
 
+    private static final String MAIN = "Main activity: ";
     FragmentTabHost fragmentTabHost;
 
     @Override
@@ -22,7 +23,43 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         initiateTab();
+        Log.e(MAIN, "onCreate");
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e(MAIN, "onStart");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(MAIN, "onRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(MAIN, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(MAIN, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(MAIN, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(MAIN, "onDestroy");
     }
 
     /**
@@ -37,27 +74,27 @@ public class MainActivity extends FragmentActivity {
         //Initiate Note tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("noteTab").
                         setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab1, R.string.ic_tab_note)),
+                                R.string.tab1, R.drawable.ic_tab_note)),
                 NoteActivity.class, null);
         //Initiate Account tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("accountTab").
                         setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab2, R.string.ic_tab_account)),
+                                R.string.tab2, R.drawable.ic_tab_account)),
                 AccountActivity.class, null);
         //Initiate limit tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("limitTab").
                         setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab3, R.string.ic_tab_limit)),
+                                R.string.tab3, R.drawable.ic_tab_limit)),
                 LimitActivity.class, null);
         //Initiate Report tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("reportTab").
                         setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab4, R.string.ic_tab_report)),
+                                R.string.tab4, R.drawable.ic_tab_report)),
                 ReportActivity.class, null);
         //Initiate Utility tab
         fragmentTabHost.addTab(fragmentTabHost.newTabSpec("utilityTab").
                         setIndicator(getTabIndicator(fragmentTabHost.getContext(),
-                                R.string.tab1, R.string.ic_tab_utility)),
+                                R.string.tab5, R.drawable.ic_tab_utility)),
                 UtilitiesActivity.class, null);
 
         //
@@ -66,6 +103,7 @@ public class MainActivity extends FragmentActivity {
 
     /**
      * Customize the tab widget
+     *
      * @param context
      * @param title
      * @param icon
@@ -73,15 +111,13 @@ public class MainActivity extends FragmentActivity {
      */
     private View getTabIndicator(Context context, int title, int icon) {
 
-        //Use font awesome
-        Typeface iconFont = FontManager.getTypeface(getApplicationContext(), FontManager.FONTAWESOME);
-        FontManager.markAsIconContainer(findViewById(R.id.ll_tab_indicator), iconFont);
-
         View view = LayoutInflater.from(context).inflate(R.layout.tab_indicator, null);
-        TextView txtImage = (TextView) view.findViewById(R.id.txt_image);
-        txtImage.setText(icon);
+        ImageView imgIcon = (ImageView) view.findViewById(R.id.img_icon);
+        imgIcon.setImageResource(icon);
         TextView txtName = (TextView) view.findViewById(R.id.txt_name);
         txtName.setText(title);
         return view;
     }
+
+
 }
