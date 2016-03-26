@@ -4,6 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+import android.view.ViewGroup;
+
+import com.example.anhlamrduc.sothuchi.activity.MainActivity;
+import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
+import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
+import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +18,7 @@ import java.util.List;
 /**
  * Created by AnhlaMrDuc on 24-Mar-16.
  */
-public class MyPagerAdapter extends FragmentPagerAdapter {
+public class MyPagerAdapter extends FragmentPagerAdapter implements NoteFragment.OnPassDataFromNote {
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -43,5 +50,20 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return super.getPageTitle(position);
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        // Don't destroy view item.
+    }
+
+    @Override
+    public void onDataReceivedFromNote(TaiKhoan account, double money) {
+        AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
+        if (accountContainerFragment != null) {
+            accountContainerFragment.onDataReceivedFromNote(account, money);
+        } else {
+            Log.e(MainActivity.MAIN, "Account Fragment is null");
+        }
     }
 }

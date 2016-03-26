@@ -15,6 +15,27 @@ public class TaiKhoan implements Parcelable {
     private String ghiChu;
     private LoaiTaiKhoan loaiTaiKhoan;
 
+    protected TaiKhoan(Parcel in) {
+        maTaiKhoan = in.readInt();
+        tenTaiKhoan = in.readString();
+        soTienBanDau = in.readDouble();
+        soTienHienCo = in.readDouble();
+        ghiChu = in.readString();
+        loaiTaiKhoan = in.readParcelable(LoaiTaiKhoan.class.getClassLoader());
+    }
+
+    public static final Creator<TaiKhoan> CREATOR = new Creator<TaiKhoan>() {
+        @Override
+        public TaiKhoan createFromParcel(Parcel in) {
+            return new TaiKhoan(in);
+        }
+
+        @Override
+        public TaiKhoan[] newArray(int size) {
+            return new TaiKhoan[size];
+        }
+    };
+
     public int getMaTaiKhoan() {
         return maTaiKhoan;
     }
@@ -66,6 +87,10 @@ public class TaiKhoan implements Parcelable {
     public TaiKhoan() {
     }
 
+    public TaiKhoan(String tenTaiKhoan) {
+        this.tenTaiKhoan = tenTaiKhoan;
+    }
+
     public TaiKhoan(int maTaiKhoan, String tenTaiKhoan, double soTienBanDau, double soTienHienCo, String ghiChu, LoaiTaiKhoan loaiTaiKhoan) {
         this.maTaiKhoan = maTaiKhoan;
         this.tenTaiKhoan = tenTaiKhoan;
@@ -89,4 +114,25 @@ public class TaiKhoan implements Parcelable {
         dest.writeString(ghiChu);
         dest.writeValue(loaiTaiKhoan);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TaiKhoan taiKhoan = (TaiKhoan) o;
+
+        return !(tenTaiKhoan != null ? !tenTaiKhoan.equals(taiKhoan.tenTaiKhoan) : taiKhoan.tenTaiKhoan != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return tenTaiKhoan != null ? tenTaiKhoan.hashCode() : 0;
+    }
+
+    public String toString() {
+        return (tenTaiKhoan);
+    }
+
 }

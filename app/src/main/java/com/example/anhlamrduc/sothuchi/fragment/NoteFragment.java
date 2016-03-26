@@ -1,5 +1,6 @@
 package com.example.anhlamrduc.sothuchi.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
+import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,7 +34,11 @@ public class NoteFragment extends Fragment {
     public static final String MONEY_FROM_NOTE = "money";
     private String accountName;
     private String[] arrAccountName;
-    Bundle bundle;
+    private TaiKhoan account;
+    private ArrayList<TaiKhoan> arrAccount;
+    double money = 0;
+    //    Bundle bundle;
+    OnPassDataFromNote onPassDataFromNote;
 
 //    DataFromNote dataFromNote;
 
@@ -41,6 +49,11 @@ public class NoteFragment extends Fragment {
     @Bind(R.id.spn_account)
     Spinner spnAccount;
 
+    public interface OnPassDataFromNote
+    {
+        public void onDataReceivedFromNote(TaiKhoan account, double money);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,20 +62,20 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Receive a bundle
-        arrAccountName = getArguments().getStringArray(MainActivity.ARR_ACCOUNT_NAME_FROM_MAIN);
+//        arrAccountName = getArguments().getStringArray(MainActivity.ARR_ACCOUNT_NAME_FROM_MAIN);
+        arrAccount = getArguments().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_MAIN);
 
 //        ((MainActivity)getActivity()).getList()
-        //
         View v = inflater.inflate(R.layout.note_layout, container, false);
         ButterKnife.bind(this, v);
         //Set Onclick for Account Spinner
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,
-                arrAccountName);
+                arrAccount);
         spnAccount.setAdapter(adapter);
         spnAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                accountName = parent.getItemAtPosition(position).toString();
+                account = (TaiKhoan) parent.getItemAtPosition(position);
             }
 
             @Override
@@ -80,15 +93,25 @@ public class NoteFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            onPassDataFromNote = (OnPassDataFromNote) activity;
+        } catch (ClassCastException e) {
+            e.getMessage();
+        }
+    }
+
     @OnClick(R.id.btn_add)
     public void addTransaction() {
-        double money = Double.parseDouble(edtAmount.getText().toString());
+        if (!edtAmount.getText().equals("")) {
+            money = Double.parseDouble(edtAmount.getText().toString());
+        }
         //Put the value
-        bundle = new Bundle();
-        bundle.putDouble(MONEY_FROM_NOTE, money);
-        bundle.putString(ACCOUNT_NAME_FROM_NOTE, accountName);
 //        ((MainActivity)get)
-        Toast.makeText(getContext(), "Ghi thành công " + money + " vào " + accountName, Toast.LENGTH_LONG).show();
+        onPassDataFromNote.onDataReceivedFromNote(account, money);
+        Toast.makeText(getContext(), "Ghi thành công", Toast.LENGTH_LONG).show();
     }
 
 //

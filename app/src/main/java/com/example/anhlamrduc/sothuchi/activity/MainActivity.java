@@ -5,13 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.adapter.MyPagerAdapter;
 import com.example.anhlamrduc.sothuchi.db.AccountController;
-import com.example.anhlamrduc.sothuchi.fragment.AccountFragment;
+import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.LimitFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
 import com.example.anhlamrduc.sothuchi.fragment.ReportFragment;
@@ -23,13 +21,14 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NoteFragment.OnPassDataFromNote {
 
     public static final String MAIN = "Main activity: ";
     public static final String LIST_ACCOUNT_FROM_MAIN = "list of account";
     public static final String TOTAL_MONEY_FROM_MAIN = "total money";
     public static final String ARR_ACCOUNT_NAME_FROM_MAIN = "account name";
     private AccountController db_account;
+    private MyPagerAdapter myPagerAdapter;
     private Bundle bundle_to_note;
     private Bundle bundle_to_account;
     private Bundle bundle_to_limit;
@@ -94,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
         db_account.close();
     }
 
+    @Override
+    public void onDataReceivedFromNote(TaiKhoan account, double money) {
+        Log.e(MAIN, "Data received to Activity");
+        myPagerAdapter.onDataReceivedFromNote(account, money);
+
+    }
+
     /**
      * Send data to Fragment
      */
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         bundle_to_account.putDouble(TOTAL_MONEY_FROM_MAIN, getSumMoney());
         //
         bundle_to_note = new Bundle();
-        bundle_to_note.putStringArray(ARR_ACCOUNT_NAME_FROM_MAIN, getAccountName());
+        bundle_to_note.putParcelableArrayList(LIST_ACCOUNT_FROM_MAIN, getListAccount());
         //
     }
 
@@ -113,9 +119,9 @@ public class MainActivity extends AppCompatActivity {
      * @param viewPager
      */
     private void setupViewPager(ViewPager viewPager) {
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         myPagerAdapter.addFrag(new NoteFragment(), "Ghi chép", bundle_to_note);
-        myPagerAdapter.addFrag(new AccountFragment(), "Tài khoản", bundle_to_account);
+        myPagerAdapter.addFrag(new AccountContainerFragment(), "Tài khoản", bundle_to_account);
         myPagerAdapter.addFrag(new LimitFragment(), "Hạn mức chi", bundle_to_limit);
         myPagerAdapter.addFrag(new ReportFragment(), "Báo cáo", bundle_to_report);
         myPagerAdapter.addFrag(new UtilitiesFragment(), "Tiện ích", bundle_to_utility);
@@ -126,30 +132,17 @@ public class MainActivity extends AppCompatActivity {
      * Customize Title And Icon for Tabs
      */
     private void setupTabIcons() {
-        TextView tab_note = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-        tab_note.setText("Ghi chép");
-        tab_note.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_note, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(R.layout.tab_layout_account);
+//        TextView tab_note = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+//        tab_note.setText("Ghi chép");
+//        tab_note.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_note_32, 0, 0);
 
-        TextView tab_account = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-        tab_account.setText("Tài khoản");
-        tab_account.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_account, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(R.layout.tab_layout_note);
+        //First Tab isn't selected when launch app, i have to setSelected = true.
+        tabLayout.getTabAt(0).getCustomView().setSelected(true);
         tabLayout.getTabAt(1).setCustomView(R.layout.tab_layout_account);
-
-        TextView tab_limit = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-        tab_limit.setText("Hạn mức chi");
-        tab_limit.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_limit, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(R.layout.tab_layout_account);
-
-        TextView tab_report = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-        tab_report.setText("Báo cáo");
-        tab_report.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_report, 0, 0);
-        tabLayout.getTabAt(3).setCustomView(R.layout.tab_layout_account);
-
-        TextView tab_utility = (TextView) LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-        tab_utility.setText("Tiện ích");
-        tab_utility.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_utility, 0, 0);
-        tabLayout.getTabAt(4).setCustomView(R.layout.tab_layout_account);
+        tabLayout.getTabAt(2).setCustomView(R.layout.tab_layout_limit);
+        tabLayout.getTabAt(3).setCustomView(R.layout.tab_layout_report);
+        tabLayout.getTabAt(4).setCustomView(R.layout.tab_layout_utility);
     }
 
 
@@ -188,4 +181,6 @@ public class MainActivity extends AppCompatActivity {
         db_account = new AccountController(this);
         return db_account.getSumMoney();
     }
+
+
 }

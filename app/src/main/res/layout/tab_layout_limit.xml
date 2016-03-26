@@ -8,7 +8,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center"
-        android:src="@drawable/image_account_color" />
+        android:src="@drawable/image_limit_color" />
 
     <TextView
         android:layout_width="wrap_content"
