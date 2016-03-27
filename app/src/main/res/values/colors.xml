@@ -9,4 +9,5 @@
     <color name="header">#01a6a0</color>
     <color name="btn_write">#60b4b4</color>
     <color name="btn_add">#24825e</color>
+    <color name="btn_save">#258963</color>
 </resources>

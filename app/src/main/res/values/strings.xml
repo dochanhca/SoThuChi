@@ -12,6 +12,13 @@
     <string name="tab_limit">limit_tab</string>
     <string name="tab_report">report_tab</string>
     <string name="tab_utility">utility_tab</string>
+    <string name="currency">đ</string>
+    <string name="spending">Mục chi</string>
+    <string name="detail">Diễn giải</string>
+    <string name="from">Từ tài khoản</string>
+    <string name="date">Ngày</string>
+    <string name="receiver">Chi cho ai</string>
+    <string name="event">Sự kiện</string>
     <string-array name="note_action">
         <item>Chi tiền</item>
         <item>Thu tiền</item>

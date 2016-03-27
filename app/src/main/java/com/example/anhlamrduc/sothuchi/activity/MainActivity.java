@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     public static final String MAIN = "Main activity: ";
     public static final String LIST_ACCOUNT_FROM_MAIN = "list of account";
     public static final String TOTAL_MONEY_FROM_MAIN = "total money";
-    public static final String ARR_ACCOUNT_NAME_FROM_MAIN = "account name";
     private AccountController db_account;
     private MyPagerAdapter myPagerAdapter;
     private Bundle bundle_to_note;

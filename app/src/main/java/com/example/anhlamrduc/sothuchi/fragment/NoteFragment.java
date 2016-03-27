@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -29,11 +27,6 @@ import butterknife.OnClick;
  */
 public class NoteFragment extends Fragment {
 
-
-    public static final String ACCOUNT_NAME_FROM_NOTE = "acount name";
-    public static final String MONEY_FROM_NOTE = "money";
-    private String accountName;
-    private String[] arrAccountName;
     private TaiKhoan account;
     private ArrayList<TaiKhoan> arrAccount;
     double money = 0;
@@ -46,7 +39,6 @@ public class NoteFragment extends Fragment {
     Button btnAdd;
     @Bind(R.id.edt_amount)
     EditText edtAmount;
-    @Bind(R.id.spn_account)
     Spinner spnAccount;
 
     public interface OnPassDataFromNote
@@ -62,27 +54,26 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Receive a bundle
-//        arrAccountName = getArguments().getStringArray(MainActivity.ARR_ACCOUNT_NAME_FROM_MAIN);
         arrAccount = getArguments().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_MAIN);
 
 //        ((MainActivity)getActivity()).getList()
         View v = inflater.inflate(R.layout.note_layout, container, false);
         ButterKnife.bind(this, v);
         //Set Onclick for Account Spinner
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,
-                arrAccount);
-        spnAccount.setAdapter(adapter);
-        spnAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                account = (TaiKhoan) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                accountName = "Ví";
-            }
-        });
+//        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,
+//                arrAccount);
+//        spnAccount.setAdapter(adapter);
+//        spnAccount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                account = (TaiKhoan) parent.getItemAtPosition(position);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
         Log.e(MainActivity.MAIN, "Note Fragment created");
         return v;
     }

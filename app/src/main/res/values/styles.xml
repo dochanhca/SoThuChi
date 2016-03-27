@@ -49,4 +49,49 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="text_border">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center</item>
+
+    </style>
+
+    <style name="ll_custom">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/ll_border</item>
+        <item name="android:layout_marginTop">@dimen/ll_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/ll_margin_bot</item>
+        <item name="android:layout_marginLeft">@dimen/ll_margin_lr</item>
+        <item name="android:layout_marginRight">@dimen/ll_margin_lr</item>
+    </style>
+
+    <style name="text_note_normal">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="text_note_detail" parent="text_note_normal">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical|end</item>
+    </style>
+
+    <style name="ll_custom_chil">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_marginTop">@dimen/ll_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/ll_margin_bot</item>
+        <item name="android:layout_marginLeft">@dimen/ll_margin_lr</item>
+        <item name="android:layout_marginRight">@dimen/ll_margin_lr</item>
+    </style>
+
 </resources>

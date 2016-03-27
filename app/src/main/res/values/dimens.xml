@@ -5,4 +5,9 @@
     <dimen name="margin_3dp">3dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="ll_margin_top">4dp</dimen>
+    <dimen name="ll_margin_bot">6dp</dimen>
+    <dimen name="ll_margin_lr">10dp</dimen>
+    <dimen name="btn_save_margin">10dp</dimen>
+    <dimen name="ll_customer_padding">5dp</dimen>
 </resources>
