@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
-import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
+import com.example.anhlamrduc.sothuchi.item.Account;
+import com.example.anhlamrduc.sothuchi.item.Pay;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class AccountContainerFragment extends Fragment implements NoteFragment.OnPassDataFromNote {
 
     private static final String TAG = "Account Container ";
-    private ArrayList<TaiKhoan> arrAccount;
+    private ArrayList<Account> arrAccount;
     private double totalMoney;
 
     public static final String ADD_ACCOUNT_FRAG = "AddAccountFragment";
@@ -51,11 +52,11 @@ public class AccountContainerFragment extends Fragment implements NoteFragment.O
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.account_container_layout, container, false);
+        View v = inflater.inflate(R.layout.fr_account_container, container, false);
 
         AddAccountFragment fragment = (AddAccountFragment) getFragmentManager().findFragmentByTag(ADD_ACCOUNT_FRAG);
 
-        if (v.findViewById(R.id.fragment_container) != null) {
+        if (v.findViewById(R.id.fragment_account_container) != null) {
             if (fragment == null) {
                 arrAccount = getArguments().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_MAIN);
                 totalMoney = getArguments().getDouble(MainActivity.TOTAL_MONEY_FROM_MAIN);
@@ -67,7 +68,7 @@ public class AccountContainerFragment extends Fragment implements NoteFragment.O
                 accountFragment.setArguments(args);
                 //
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.fragment_container, accountFragment, ACCOUNT_FRAG);
+                transaction.add(R.id.fragment_account_container, accountFragment, ACCOUNT_FRAG);
                 transaction.commit();
             }
         }
@@ -113,10 +114,10 @@ public class AccountContainerFragment extends Fragment implements NoteFragment.O
     }
 
     @Override
-    public void onDataReceivedFromNote(TaiKhoan account, double money) {
+    public void onDataInsertToDBFromNote(Pay pay) {
         AccountFragment fragment = (AccountFragment) getFragmentManager().findFragmentByTag(ACCOUNT_FRAG);
         if (fragment != null) {
-            fragment.onDataReceivedFromNote(account, money);
+            fragment.onDataInsertToDBFromNote(pay);
         }
     }
 }

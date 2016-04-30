@@ -1,11 +1,12 @@
 package com.example.anhlamrduc.sothuchi.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.anhlamrduc.sothuchi.item.LoaiTaiKhoan;
-import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
+import com.example.anhlamrduc.sothuchi.item.Account;
+import com.example.anhlamrduc.sothuchi.item.AccountType;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -33,11 +34,11 @@ public class AccountController extends SQLiteAssetHelper {
     }
 
     /**
-     * @return list TaiKhoan
+     * @return list Account
      */
-    public ArrayList<TaiKhoan> getListAccount() {
+    public ArrayList<Account> getListAccount() {
 
-        ArrayList<TaiKhoan> arrAccount = new ArrayList<>();
+        ArrayList<Account> arrAccount = new ArrayList<>();
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
@@ -48,15 +49,15 @@ public class AccountController extends SQLiteAssetHelper {
             Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {
                 do {
-                    LoaiTaiKhoan loaiTaiKhoan = new LoaiTaiKhoan();
-                    loaiTaiKhoan.setMaLoai(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID));
-                    int maTaiKhoan = cs.getInt(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID));
-                    String tenTaiKhoan = cs.getString(cs.getColumnIndex(KEY_NAME));
-                    double soTienBanDau = cs.getDouble(cs.getColumnIndex(KEY_FIST_MONEY));
-                    double soTienHienCo = cs.getDouble(cs.getColumnIndex(KEY_CURRENT_MONEY));
-                    String ghiChu = cs.getString(cs.getColumnIndex(KEY_NOTE));
-                    TaiKhoan account = new TaiKhoan(maTaiKhoan, tenTaiKhoan, soTienBanDau, soTienHienCo,
-                            ghiChu, loaiTaiKhoan);
+                    AccountType accountType = new AccountType();
+                    accountType.setTypeID(cs.getInt(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID)));
+                    int accountID = cs.getInt(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID));
+                    String accountName = cs.getString(cs.getColumnIndex(KEY_NAME));
+                    double firstMoney = cs.getDouble(cs.getColumnIndex(KEY_FIST_MONEY));
+                    double currentMoney = cs.getDouble(cs.getColumnIndex(KEY_CURRENT_MONEY));
+                    String note = cs.getString(cs.getColumnIndex(KEY_NOTE));
+                    Account account = new Account(accountID, accountName, firstMoney, currentMoney,
+                            note, accountType);
                     arrAccount.add(account);
 
                 } while (cs.moveToNext());
@@ -72,6 +73,7 @@ public class AccountController extends SQLiteAssetHelper {
 
     /**
      * get HinhAnh column From Database
+     *
      * @param typeAccountID
      * @return
      */
@@ -81,7 +83,7 @@ public class AccountController extends SQLiteAssetHelper {
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
-            String sql = "SELECT " +KEY_HINH_ANH+ " FROM "+DB_TABLE_LOAITK+" WHERE MaLoai = " +typeAccountID;
+            String sql = "SELECT " + KEY_HINH_ANH + " FROM " + DB_TABLE_LOAITK + " WHERE MaLoai = " + typeAccountID;
 
             Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {
@@ -99,6 +101,7 @@ public class AccountController extends SQLiteAssetHelper {
 
     /**
      * Calculate sum of SoTienHienCo
+     *
      * @return sum_money
      */
     public double getSumMoney() {
@@ -119,5 +122,41 @@ public class AccountController extends SQLiteAssetHelper {
             close();
         }
         return sum;
+    }
+
+    public long addAccount(Account account) {
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_NAME, account.getAccountName());
+            contentValues.put(KEY_FIST_MONEY, account.getFirstMoney());
+            contentValues.put(KEY_CURRENT_MONEY, account.getCurrentMoney());
+            contentValues.put(KEY_NOTE, account.getNote());
+            contentValues.put(KEY_TYPE_ACCOUNT_ID, account.getAccountType().getTypeID());
+            return db.insert(DB_TABLE, null, contentValues);
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            close();
+        }
+        return 0;
+    }
+
+    public long updateAccount(Account account) {
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_NAME, account.getAccountName());
+            contentValues.put(KEY_FIST_MONEY, account.getFirstMoney());
+            contentValues.put(KEY_CURRENT_MONEY, account.getCurrentMoney());
+            contentValues.put(KEY_NOTE, account.getNote());
+            contentValues.put(KEY_TYPE_ACCOUNT_ID, account.getAccountType().getTypeID());
+            return db.update(DB_TABLE, contentValues, KEY_ID + "=" + account.getAccountID(), null);
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            close();
+        }
+        return 0;
     }
 }

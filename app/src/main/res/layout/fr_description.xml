@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fr_description"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/bg_gray"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@color/header_blue"
+        android:id="@+id/ll_list_account"
+        android:layout_height="@dimen/header_height"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txt_cancel"
+            style="@style/text_header"
+            android:gravity="center"
+            android:layout_gravity="center_vertical|left"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:paddingRight="@dimen/margin_5dp"
+            android:text="@string/cancel" />
+        <TextView
+            style="@style/text_header"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/description" />
+
+        <TextView
+            android:id="@+id/txt_done"
+            style="@style/text_header"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="@dimen/margin_10dp"
+            android:paddingLeft="@dimen/margin_5dp"
+            android:text="@string/done" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edt_description"
+        style="@style/multiline_edittext"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+</LinearLayout>

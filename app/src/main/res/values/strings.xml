@@ -19,16 +19,30 @@
     <string name="date">Ngày</string>
     <string name="receiver">Chi cho ai</string>
     <string name="event">Sự kiện</string>
-    <string-array name="note_action">
-        <item>Chi tiền</item>
-        <item>Thu tiền</item>
-        <item>Chuyển khoản</item>
-        <item>Ghi theo tiền còn</item>
-    </string-array>
-    <string-array name="note_action_detail">
-        <item>Khi chi tiêu, cho vay, trả nợ.</item>
-        <item>Khi có khoản thu nhập, đi vay, thu nợ.</item>
-        <item>Chuyển tiền giữa các tài khoản trong Sổ của bạn.</item>
-        <item>Tính và ghi số tiền đã chi/thu theo số tiền đang còn.</item>
-    </string-array>
+    <string name="account">Tài khoản</string>
+    <string name="spending_item">Hạng mục chi</string>
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
+    <string name="name">Tên</string>
+    <string name="item_name">Tên hạng mục</string>
+    <string name="parent_item">Hạng mục cha</string>
+    <string name="description">Diễn giải</string>
+    <string name="list_spend_tab_one">Chi tiêu</string>
+    <string name="list_spend_tab_two">Vay nợ</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="done">Xong</string>
+    <string name="note">Ghi chép</string>
+    <string name="limit">Hạn mức chi</string>
+    <string name="report">Báo cáo</string>
+    <string name="utilities">Tiện ích</string>
+    <string name="tab_date">Ngày</string>
+    <string name="tab_time">Giờ</string>
+    <string name="today">Hôm nay</string>
+    <string name="spending_who">Chi cho ai</string>
+    <string name="select_or_input_receiver">Chọn hoặc nhập người được chi</string>
+    <string name="trip_or_event">Chuyến đi/Sự kiện</string>
+    <string name="select_or_input_trip">Chọn hoặc nhập Chuyến đi sự kiện</string>
+    <string name="spending_cant_be_blank">Mục chi không được để trống</string>
+    <string name="write_success">Ghi thành công</string>
+
 </resources>

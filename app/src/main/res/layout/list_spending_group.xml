@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/lv_group_row_height"
+    android:background="@drawable/bg_list_header"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/img_lv_indicator"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/ic_lv_group_collapse" />
+
+    <TextView
+        android:id="@+id/txt_lv_spending_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Nhà cửa"
+        android:layout_marginLeft="@dimen/margin_5dp"
+        android:gravity="center_vertical|left"
+        android:textColor="@android:color/black"
+        android:textSize="17dp"
+        android:textStyle="bold" />
+</LinearLayout>

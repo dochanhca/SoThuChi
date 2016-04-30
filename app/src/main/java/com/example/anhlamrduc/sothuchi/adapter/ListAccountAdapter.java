@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.db.AccountController;
-import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
+import com.example.anhlamrduc.sothuchi.item.Account;
 import com.example.anhlamrduc.sothuchi.utility.Currency;
 
 import java.util.ArrayList;
@@ -21,29 +21,29 @@ import butterknife.ButterKnife;
 /**
  * Created by AnhlaMrDuc on 20-Mar-16.
  */
-public class ListAccountAdapter extends ArrayAdapter<TaiKhoan> {
+public class ListAccountAdapter extends ArrayAdapter<Account> {
 
     LayoutInflater layoutInflater;
     private AccountController db;
 
-    public ListAccountAdapter(Context context, ArrayList<TaiKhoan> list) {
+    public ListAccountAdapter(Context context, ArrayList<Account> list) {
         super(context, -1, list);
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TaiKhoan account = getItem(position);
+        Account account = getItem(position);
         ViewHolder viewHolder;
 
-        String imgName = getImageName(account.getMaTaiKhoan());
+        String imgName = getImageName(account.getAccountID());
 
         convertView = layoutInflater.inflate(R.layout.item_account, parent, false);
         viewHolder = new ViewHolder(convertView);
         convertView.setTag(viewHolder);
 
-        viewHolder.txtAccountName.setText(account.getTenTaiKhoan());
-        String currently_money = Currency.getCurrency(account.getSoTienHienCo());
+        viewHolder.txtAccountName.setText(account.getAccountName());
+        String currently_money = Currency.getCurrency(account.getCurrentMoney());
         viewHolder.txtMoney.setText("Còn: " + currently_money + " đ");
         int imgID = getContext().getResources().getIdentifier(imgName, "drawable", getContext().getPackageName());
         viewHolder.imgIcon.setImageResource(imgID);

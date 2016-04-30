@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Normal-->
+    <item android:state_pressed="false" android:state_selected="false">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <!-- Set màu nền -->
+            <solid android:color="@color/header_blue"></solid>
+        </shape>
+    </item>
+    <!--Selected but not pressed-->
+    <item android:state_pressed="false" android:state_selected="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <!-- Set màu nền -->
+            <solid android:color="@color/btn_write_cyan"></solid>
+        </shape>
+    </item>
+
+    <!--pressed-->
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <!-- Set màu nền -->
+            <solid android:color="@color/btn_write_cyan"></solid>
+        </shape>
+    </item>
+</selector>

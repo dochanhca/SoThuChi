@@ -25,5 +25,5 @@
         app:tabMode="fixed"
         app:tabGravity="fill"
         android:layout_alignParentBottom="true"
-        android:background="@color/normal" />
+        android:background="@color/tab_gray" />
 </RelativeLayout>

@@ -16,13 +16,6 @@
     <style name="item_text_normal" parent="wrap_content">
         <item name="android:textSize">15sp</item>
     </style>
-
-    <style name="text_header">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_gravity">center_vertical|center_horizontal</item>
-    </style>
-
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
 
     </style>
@@ -36,12 +29,12 @@
     </style>
 
     <style name="MyCustomLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/normal</item>
+        <item name="tabIndicatorColor">@color/tab_gray</item>
         <item name="tabPaddingStart">2dp</item>
         <item name="tabPaddingEnd">2dp</item>
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-        <item name="tabBackground">@color/normal</item>
-        <item name="android:selectableItemBackground">@color/normal</item>
+        <item name="tabBackground">@color/tab_gray</item>
+        <item name="android:selectableItemBackground">@color/tab_gray</item>
     </style>
 
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
@@ -58,11 +51,11 @@
 
     </style>
 
-    <style name="ll_custom">
+    <style name="linear_custom">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/ll_border</item>
+        <item name="android:background">@drawable/bg_linear_border</item>
         <item name="android:layout_marginTop">@dimen/ll_margin_top</item>
         <item name="android:layout_marginBottom">@dimen/ll_margin_bot</item>
         <item name="android:layout_marginLeft">@dimen/ll_margin_lr</item>
@@ -81,17 +74,69 @@
     <style name="text_note_detail" parent="text_note_normal">
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_vertical|end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginRight">@dimen/margin_5dp</item>
+        <item name="android:paddingRight">@dimen/text_note_small_padding</item>
     </style>
 
-    <style name="ll_custom_chil">
+    <style name="linear_custom_chil">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@android:color/white</item>
-        <item name="android:layout_marginTop">@dimen/ll_margin_top</item>
-        <item name="android:layout_marginBottom">@dimen/ll_margin_bot</item>
-        <item name="android:layout_marginLeft">@dimen/ll_margin_lr</item>
-        <item name="android:layout_marginRight">@dimen/ll_margin_lr</item>
+        <item name="android:background">@drawable/bg_linear_child</item>
+        <item name="android:layout_marginTop">@dimen/ll_margin_top_2</item>
+        <item name="android:layout_marginBottom">@dimen/ll_margin_bot_3</item>
+        <item name="android:layout_marginLeft">@dimen/ll_margin_lr_5</item>
+        <item name="android:layout_marginRight">@dimen/ll_margin_lr_5</item>
+        <item name="android:paddingTop">@dimen/ll_margin_top_2</item>
+        <item name="android:paddingBottom">@dimen/ll_margin_bot_3</item>
+        <item name="android:paddingLeft">@dimen/ll_margin_lr_5</item>
+        <item name="android:paddingRight">@dimen/ll_margin_lr_5</item>
+        <item name="android:clickable">true</item>
     </style>
 
+    <style name="edt_note">
+        <item name="android:gravity">center_vertical|end</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@android:color/transparent</item>
+        
+    </style>
+
+    <style name="multiline_edittext">
+        <item name="android:lines">5</item>
+        <item name="android:minLines">4</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:maxLines">10</item>
+        <item name="android:gravity">top</item>
+        <item name="android:layout_margin">@dimen/margin_10dp</item>
+        <item name="android:background">@drawable/bg_edt_multiline</item>
+    </style>
+
+    <style name="text_header">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_header_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/bg_btn_header_selected</item>
+    </style>
+
+    <style name="btn_header">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_header_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="edt_single_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/header_height</item>
+        <item name="android:layout_margin">@dimen/margin_10dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <dimen name="text_note_small_padding">3dp</dimen>
 </resources>

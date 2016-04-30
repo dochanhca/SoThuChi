@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.anhlamrduc.sothuchi.item.LoaiTaiKhoan;
+import com.example.anhlamrduc.sothuchi.item.AccountType;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class AccountTypeController extends SQLiteAssetHelper {
     }
 
     /**
-     * @return list of LoaiTaiKhoan
+     * @return list of AccountType
      */
-    public ArrayList<LoaiTaiKhoan> getListAccountType() {
+    public ArrayList<AccountType> getListAccountType() {
 
-        ArrayList<LoaiTaiKhoan> arrAccountType = new ArrayList<>();
+        ArrayList<AccountType> arrAccountType = new ArrayList<>();
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
@@ -41,7 +41,7 @@ public class AccountTypeController extends SQLiteAssetHelper {
                     + " FROM " + DB_TABLE, null);
             if (cs.moveToFirst()) {
                 do {
-                    LoaiTaiKhoan accountType = new LoaiTaiKhoan(cs.getInt(1), cs.getString(2), cs.getString(3));
+                    AccountType accountType = new AccountType(cs.getInt(1), cs.getString(2), cs.getString(3));
                     arrAccountType.add(accountType);
 
                 } while (cs.moveToNext());

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <TextView
+        android:id="@+id/txt_receiver_name"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:text="Gấu"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_header_size"
+        android:textColor="@android:color/black"
+        style="@style/item_text_normal" />
+    <ImageView
+        android:id="@+id/img_edit"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="@dimen/margin_large"
+        android:src="@drawable/ic_edit_account"
+        />
+
+</RelativeLayout>

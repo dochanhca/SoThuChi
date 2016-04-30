@@ -2,12 +2,15 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#33b5e5</color>
     <color name="tab_color_selected">#01a4a3</color>
-    <color name="normal">#f6f6f6</color>
-    <color name="background">#e1e1e1</color>
-    <color name="header">#01a6a0</color>
-    <color name="btn_write">#60b4b4</color>
-    <color name="btn_add">#24825e</color>
-    <color name="btn_save">#258963</color>
+    <color name="tab_gray">#f6f6f6</color>
+    <color name="bg_gray">#e1e1e1</color>
+    <color name="header_blue">#01a6a0</color>
+    <color name="btn_write_cyan">#60b4b4</color>
+    <color name="btn_add_green">#24825e</color>
+    <color name="btn_save_green">#258963</color>
+    <color name="normal_gray">#cecece</color>
+    <color name="light_gray">#ece9e9</color>
+    <color name="dark_gray">#d8d8d8</color>
 </resources>

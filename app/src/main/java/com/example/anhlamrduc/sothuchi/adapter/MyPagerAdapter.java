@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
-import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
+import com.example.anhlamrduc.sothuchi.item.Pay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +58,12 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements NoteFragment
     }
 
     @Override
-    public void onDataReceivedFromNote(TaiKhoan account, double money) {
+    public void onDataInsertToDBFromNote(Pay pay) {
         AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
         if (accountContainerFragment != null) {
-            accountContainerFragment.onDataReceivedFromNote(account, money);
+            accountContainerFragment.onDataInsertToDBFromNote(pay);
         } else {
-            Log.e(MainActivity.MAIN, "Account Fragment is null");
+            Log.e(MainActivity.TAG, "Account Fragment is null");
         }
     }
 }

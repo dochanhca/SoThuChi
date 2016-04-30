@@ -17,7 +17,8 @@ import android.widget.TextView;
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.adapter.ListAccountAdapter;
-import com.example.anhlamrduc.sothuchi.item.TaiKhoan;
+import com.example.anhlamrduc.sothuchi.item.Account;
+import com.example.anhlamrduc.sothuchi.item.Pay;
 import com.example.anhlamrduc.sothuchi.utility.Currency;
 
 import java.util.ArrayList;
@@ -31,14 +32,7 @@ import butterknife.OnClick;
  */
 public class AccountFragment extends ListFragment implements NoteFragment.OnPassDataFromNote {
 
-    @Bind(android.R.id.list)
-    ListView lvAccount;
-    @Bind(R.id.txt_sum)
-    TextView txtSum;
-    @Bind(R.id.img_add)
-    ImageView imgAdd;
-
-    private ArrayList<TaiKhoan> arrAccount;
+    private ArrayList<Account> arrAccount;
     private double totalMoney;
     private ListAccountAdapter listAccountAdapter;
     private String ACCOUNT = "account fragment";
@@ -62,14 +56,15 @@ public class AccountFragment extends ListFragment implements NoteFragment.OnPass
 //        money = getArguments().getDouble(NoteFragment.MONEY_FROM_NOTE);
 //        accountName = getArguments().getString(NoteFragment.ACCOUNT_NAME_FROM_NOTE);
         // Inflate layout for AccountFragment
-        View v = inflater.inflate(R.layout.account_layout, container, false);
+        View v = inflater.inflate(R.layout.fr_account, container, false);
         ButterKnife.bind(this, v);
+        imgBack.setVisibility(View.GONE);
 
         String sumMoney = Currency.getCurrency(totalMoney);
-        txtSum.setText("Tổng còn: " + sumMoney + " đ");
+        txtSum.setText("Tổng còn: " + sumMoney + " "+getResources().getString(R.string.currency));
         listAccountAdapter = new ListAccountAdapter(getActivity(), arrAccount);
         lvAccount.setAdapter(listAccountAdapter);
-        Log.e(MainActivity.MAIN, "Account Fragment created");
+        Log.e(MainActivity.TAG, "Account Fragment created");
         return v;
     }
 
@@ -87,14 +82,19 @@ public class AccountFragment extends ListFragment implements NoteFragment.OnPass
 
     }
 
+//    @Override
+//    public void onDataReceivedFromNote(double money, Account account) {
+//
+//    }
+
     @Override
-    public void onDataReceivedFromNote(TaiKhoan account, double money) {
-        Log.e(ACCOUNT, "Finally! accountName =" + account + ", money=" + money);
-        if (arrAccount.contains(account)) {
-            TaiKhoan newAccount = new TaiKhoan(account.getMaTaiKhoan(), account.getTenTaiKhoan(),
-                    account.getSoTienBanDau(), account.getSoTienHienCo() + money, account.getGhiChu(),
-                    account.getLoaiTaiKhoan());
-            arrAccount.set(arrAccount.indexOf(account), newAccount);
+    public void onDataInsertToDBFromNote(Pay pay) {
+        Log.e(ACCOUNT, "money= " + pay.getMoney());
+        if (arrAccount.contains(pay.getAccount())) {
+            Account newAccount = new Account(pay.getAccount().getAccountID(), pay.getAccount().getAccountName(),
+                    pay.getAccount().getFirstMoney(), pay.getAccount().getCurrentMoney() + pay.getMoney(), pay.getAccount().getNote(),
+                    pay.getAccount().getAccountType());
+            arrAccount.set(arrAccount.indexOf(pay.getAccount()), newAccount);
             listAccountAdapter.notifyDataSetChanged();
         }
     }
@@ -104,11 +104,18 @@ public class AccountFragment extends ListFragment implements NoteFragment.OnPass
         Fragment addAccountFragment = new AddAccountFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, addAccountFragment, AccountContainerFragment.ADD_ACCOUNT_FRAG);
+        transaction.replace(R.id.fragment_account_container, addAccountFragment, AccountContainerFragment.ADD_ACCOUNT_FRAG);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
 
         transaction.commit();
 
     }
+
+    @Bind(android.R.id.list)
+    ListView lvAccount;
+    @Bind(R.id.txt_sum)
+    TextView txtSum;
+    @Bind(R.id.img_back)
+    ImageView imgBack;
 }

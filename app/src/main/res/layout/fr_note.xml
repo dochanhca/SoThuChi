@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/tab_layout_height"
+        android:background="@color/bg_gray"
+        android:orientation="vertical">
+
+        <!--header-->
+        <LinearLayout
+            android:id="@+id/ll_list_account"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/header_blue"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_transaction_history"
+                />
+
+            <Spinner
+                android:id="@+id/spn_note_action"
+                style="@style/text_header"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/sp_normal_height"
+                android:layout_weight="4"
+                android:background="@drawable/bg_btn_border"
+                android:dropDownWidth="wrap_content"
+                android:spinnerMode="dropdown"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"></Spinner>
+
+            <Button
+                android:id="@+id/btn_write"
+                style="@style/btn_header"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:layout_marginRight="@dimen/margin_5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_border"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:text="Ghi" />
+        </LinearLayout>
+
+        <!--amount-->
+        <LinearLayout
+            style="@style/linear_custom"
+            android:padding="@dimen/ll_customer_padding">
+
+            <EditText
+                android:id="@+id/edt_amount"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/margin_5dp"
+                android:layout_weight="8"
+                android:background="@android:color/white"
+                android:gravity="end|center_vertical"
+                android:hint="@string/amount"
+                android:inputType="number"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/text_border"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1.2"
+                android:background="@drawable/bg_txt_border"
+                android:text="@string/currency"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <!--linear cotainer 1-->
+        <LinearLayout
+            style="@style/linear_custom"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_spending_item"
+                style="@style/linear_custom_chil">
+
+                <TextView
+                    style="@style/text_note_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:duplicateParentState="true"
+                    android:text="@string/spending" />
+
+                <TextView
+                    android:id="@+id/txt_spending"
+                    style="@style/text_note_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="3"
+                    android:text="Tiêu" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:background="@android:color/darker_gray"></View>
+
+            <LinearLayout
+                android:id="@+id/ll_note_detail"
+                style="@style/linear_custom_chil">
+
+                <TextView
+                    style="@style/text_note_normal"
+                    android:layout_weight="1"
+                    android:text="@string/detail" />
+
+                <TextView
+                    android:id="@+id/txt_note_detail"
+                    style="@style/text_note_detail"
+                    android:layout_weight="3" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--linear container 2-->
+        <LinearLayout
+            style="@style/linear_custom"
+            android:orientation="vertical">
+            <!--account-->
+            <LinearLayout
+                android:id="@+id/ll_note_account"
+                style="@style/linear_custom_chil">
+
+                <TextView
+                    style="@style/text_note_normal"
+                    android:layout_weight="2"
+                    android:text="@string/from" />
+
+                <TextView
+                    android:id="@+id/txt_account_name"
+                    style="@style/text_note_detail"
+                    android:layout_weight="3"
+                    android:text="Ví" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:background="@android:color/darker_gray"></View>
+
+            <!--description-->
+            <LinearLayout
+                android:id="@+id/ll_date_spending"
+                style="@style/linear_custom_chil">
+
+                <TextView
+
+                    style="@style/text_note_normal"
+                    android:layout_weight="1"
+                    android:text="@string/date" />
+
+                <TextView
+                    android:id="@+id/txt_date_spending"
+                    style="@style/text_note_detail"
+                    android:layout_weight="3" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:background="@android:color/darker_gray"></View>
+            <!--recevier-->
+            <LinearLayout
+                android:id="@+id/ll_receiver"
+                style="@style/linear_custom_chil">
+
+                <TextView
+                    style="@style/text_note_normal"
+                    android:layout_weight="2"
+                    android:text="@string/receiver" />
+
+                <TextView
+                    android:id="@+id/txt_receiver"
+                    style="@style/text_note_detail"
+                    android:layout_weight="3"
+                    android:text="Vợ" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_right" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:background="@android:color/darker_gray"></View>
+            <!--event-->
+            <LinearLayout
+                android:id="@+id/ll_trip"
+                style="@style/linear_custom_chil">
+
+                <TextView
+                    style="@style/text_note_normal"
+                    android:layout_weight="1"
+                    android:text="@string/event" />
+
+                <TextView
+                    android:id="@+id/txt_trip"
+                    style="@style/text_note_detail"
+                    android:layout_weight="3"
+                    android:textColor="@android:color/darker_gray"
+                    android:text="@string/trip_or_event" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_add"
+            style="@style/text_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/btn_save_margin"
+            android:background="@drawable/btn_save_border"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:text="Ghi"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</ScrollView>
