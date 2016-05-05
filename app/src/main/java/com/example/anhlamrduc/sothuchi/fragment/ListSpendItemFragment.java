@@ -1,15 +1,11 @@
 package com.example.anhlamrduc.sothuchi.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -17,43 +13,45 @@ import android.widget.Spinner;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
-import com.example.anhlamrduc.sothuchi.adapter.ExpandableListAdapter;
+import com.example.anhlamrduc.sothuchi.adapter.ExpandableListSpendingAdapter;
 import com.example.anhlamrduc.sothuchi.adapter.NoteSpinnerAdapter;
 import com.example.anhlamrduc.sothuchi.item.SpendingItem;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by AnhlaMrDuc on 28-Mar-16.
  */
-public class ListSpendItemFragment extends Fragment {
+public class ListSpendItemFragment extends BaseFragment {
 
     private static final String TAG = "ListSpendItem: ";
-    public static final String SPENDING_FROM_LIST_ITEM = "Spending";
-    private ArrayList<SpendingItem> arrSpending;
-    ExpandableListAdapter listAdapter;
-    List<SpendingItem> listSpendingParent;
+    private ArrayList<SpendingItem> spendingList;
+    private SpendingItem spendingItem;
+
+    ExpandableListSpendingAdapter listAdapter;
+
+    ArrayList<SpendingItem> listSpendingParent;
     HashMap<String, List<SpendingItem>> listSpendingChild;
 
-    OnDataPassFromListSpendItem onPassDataFromListSpendItem;
-
-    public interface OnDataPassFromListSpendItem {
-        public void onDataReceivedFromListSpendItem(SpendingItem spending);
-    }
 
     private ExpandableListView.OnGroupClickListener onGroupClickListener = new ExpandableListView.OnGroupClickListener() {
         @Override
         public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-            onPassDataFromListSpendItem.onDataReceivedFromListSpendItem(listSpendingParent.get(groupPosition));
-//            if (getFragmentManager().getBackStackEntryCount() > 0) {
-//                getFragmentManager().popBackStack();
-//            }
+//            onPassDataFromListSpendItem.onDataReceivedFromListSpendItem(listSpendingParent.get(groupPosition));
+//            SharedPreferences mpPreferences = getPreferen
+            Gson gson = new Gson();
+            String spendingItemJson = gson.toJson(listSpendingParent.get(groupPosition));
+            getEditor().putString(MainActivity.SPENDING_ITEM_FROM_LIST_SPENDING, spendingItemJson);
+            getEditor().commit();
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            }
             return true;
         }
     };
@@ -64,9 +62,18 @@ public class ListSpendItemFragment extends Fragment {
         public boolean onChildClick(ExpandableListView parent, View v,
                                     int groupPosition, int childPosition, long id) {
             // TODO Auto-generated method stub
+            Gson gson = new Gson();
             SpendingItem spending = listSpendingChild.
                     get(listSpendingParent.get(groupPosition).getSpendingItemName()).get(childPosition);
-            onPassDataFromListSpendItem.onDataReceivedFromListSpendItem(spending);
+            String spendingItemJson = gson.toJson(spending);
+            getEditor().putString(MainActivity.SPENDING_ITEM_FROM_LIST_SPENDING, spendingItemJson);
+            getEditor().commit();
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            }
+//            SpendingItem spending = listSpendingChild.
+//                    get(listSpendingParent.get(groupPosition).getSpendingItemName()).get(childPosition);
+//            onPassDataFromListSpendItem.onDataReceivedFromListSpendItem(spending);
             return true;
         }
     };
@@ -88,22 +95,13 @@ public class ListSpendItemFragment extends Fragment {
     };
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        onPassDataFromListSpendItem = (OnDataPassFromListSpendItem) activity;
+    protected int layoutID() {
+        return R.layout.fr_list_spend_item;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fr_list_spend_item, container, false);
-        ButterKnife.bind(this, v);
-
-        // receive bundle
-        arrSpending = getArguments().getParcelableArrayList(MainActivity.LIST_SPENDING_FROM_MAIN);
-
+    protected void initView() {
         initiateListview();
-
         spnSpendAction.setAdapter(new NoteSpinnerAdapter(getContext(),
                 R.layout.spinner_dropdown_custom,
                 getResources().getStringArray(R.array.spn_spend_title)));
@@ -113,8 +111,17 @@ public class ListSpendItemFragment extends Fragment {
 //        searchView.setIconifiedByDefault(false);
 //        searchView.setOnQueryTextListener(this);
 //        searchView.setOnCloseListener(this);
+    }
 
-        return v;
+    @Override
+    protected void handleData() {
+        spendingList = getArguments().getParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB);
+        if (getNewSpendingItem() != null) {
+            spendingItem = getNewSpendingItem();
+            getEditor().remove(MainActivity.NEW_SPENDING_ITEM);
+            getEditor().commit();
+            spendingList.add(spendingItem);
+        }
     }
 
 
@@ -126,28 +133,21 @@ public class ListSpendItemFragment extends Fragment {
     @OnClick(R.id.img_add)
     public void showAddSpendItem() {
         AddSpendItemFragment addSpendItemFragment = new AddSpendItemFragment();
-//                accountFragment.setArguments(args);
-        //
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB, spendingList);
+        addSpendItemFragment.setArguments(args);
+
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fr_list_spend_item_container, addSpendItemFragment,
-                ListSpendItemContainerFragment.Add_SPEND_ITEM_FRAG);
+                ListSpendItemContainerFragment.ADD_SPEND_ITEM_FRAG);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
     @OnClick(R.id.img_back)
     public void gotoBack() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-            return;
-        }
+        getFragmentManager().popBackStack();
     }
 
     private void initiateListview() {
@@ -155,7 +155,7 @@ public class ListSpendItemFragment extends Fragment {
         // preparing list data
         prepareListData();
 
-        listAdapter = new ExpandableListAdapter(getContext(), listSpendingParent, listSpendingChild);
+        listAdapter = new ExpandableListSpendingAdapter(getContext(), listSpendingParent, listSpendingChild);
         // setting list adapter
         lvSpending.setAdapter(listAdapter);
         for (int i = 0; i < listAdapter.getGroupCount(); i++) {
@@ -175,7 +175,7 @@ public class ListSpendItemFragment extends Fragment {
         listSpendingParent = new ArrayList<SpendingItem>();
         listSpendingChild = new HashMap<String, List<SpendingItem>>();
 
-        for (SpendingItem spending : arrSpending) {
+        for (SpendingItem spending : spendingList) {
             if (spending.getParentItem() == null)
                 listSpendingParent.add(spending);
             else if (spending.getParentItem().equals(""))
@@ -194,10 +194,10 @@ public class ListSpendItemFragment extends Fragment {
      */
     private List<SpendingItem> listSpendingChild(String parentName) {
         List<SpendingItem> child = new ArrayList<>();
-        for (int i = 0; i < arrSpending.size(); i++) {
-            if (arrSpending.get(i).getParentItem() != null) {
-                if (arrSpending.get(i).getParentItem().equals(parentName))
-                    child.add(arrSpending.get(i));
+        for (int i = 0; i < spendingList.size(); i++) {
+            if (spendingList.get(i).getParentItem() != null) {
+                if (spendingList.get(i).getParentItem().equals(parentName))
+                    child.add(spendingList.get(i));
             }
         }
         return child;

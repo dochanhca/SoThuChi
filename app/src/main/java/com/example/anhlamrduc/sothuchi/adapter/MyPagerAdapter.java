@@ -11,6 +11,8 @@ import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
 import com.example.anhlamrduc.sothuchi.item.Pay;
+import com.example.anhlamrduc.sothuchi.item.ReceiveMoney;
+import com.example.anhlamrduc.sothuchi.item.Transfer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +60,30 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements NoteFragment
     }
 
     @Override
-    public void onDataInsertToDBFromNote(Pay pay) {
+    public void onPayInsertToDBFromNote(Pay pay) {
         AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
         if (accountContainerFragment != null) {
-            accountContainerFragment.onDataInsertToDBFromNote(pay);
+            accountContainerFragment.onPayInsertToDBFromNote(pay);
+        } else {
+            Log.e(MainActivity.TAG, "Account Fragment is null");
+        }
+    }
+
+    @Override
+    public void onReceiveMoneyInsertToDBFromNote(ReceiveMoney receiveMoney) {
+        AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
+        if (accountContainerFragment != null) {
+            accountContainerFragment.onReceiveMoneyInsertToDBFromNote(receiveMoney);
+        } else {
+            Log.e(MainActivity.TAG, "Account Fragment is null");
+        }
+    }
+
+    @Override
+    public void onTransferInsertToDBFromNote(Transfer transfer) {
+        AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
+        if (accountContainerFragment != null) {
+            accountContainerFragment.onTransferInsertToDBFromNote(transfer);
         } else {
             Log.e(MainActivity.TAG, "Account Fragment is null");
         }

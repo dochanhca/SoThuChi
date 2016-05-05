@@ -19,11 +19,8 @@ public class AccountTypeController extends SQLiteAssetHelper {
     private static final String KEY_IMAGE = "HinhAnh";
     private static final String DB_TABLE = "LoaiTaiKhoan";
 
-    private static final String DB_NAME = "misa.sqlite";
-    private static final int DB_VERSION = 1;
-
     public AccountTypeController(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, DBConstant.DB_NAME, null, DBConstant.DB_VERSION);
     }
 
     /**
@@ -41,7 +38,11 @@ public class AccountTypeController extends SQLiteAssetHelper {
                     + " FROM " + DB_TABLE, null);
             if (cs.moveToFirst()) {
                 do {
-                    AccountType accountType = new AccountType(cs.getInt(1), cs.getString(2), cs.getString(3));
+                    int id = cs.getInt(cs.getColumnIndex(KEY_ID));
+                    String name = cs.getString(cs.getColumnIndex(KEY_NAME));
+                    String image = cs.getString(cs.getColumnIndex(KEY_IMAGE));
+
+                    AccountType accountType = new AccountType(id, name, image);
                     arrAccountType.add(accountType);
 
                 } while (cs.moveToNext());

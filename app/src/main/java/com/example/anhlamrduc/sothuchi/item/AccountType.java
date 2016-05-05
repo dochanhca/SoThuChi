@@ -18,6 +18,18 @@ public class AccountType implements Parcelable {
         image = in.readString();
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(typeID);
+        dest.writeString(typeName);
+        dest.writeString(image);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public static final Creator<AccountType> CREATOR = new Creator<AccountType>() {
         @Override
         public AccountType createFromParcel(Parcel in) {
@@ -61,17 +73,5 @@ public class AccountType implements Parcelable {
         this.typeID = typeID;
         this.typeName = typeName;
         this.image = image;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(typeID);
-        dest.writeString(typeName);
-        dest.writeString(image);
     }
 }

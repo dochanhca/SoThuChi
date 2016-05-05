@@ -12,9 +12,11 @@ import com.example.anhlamrduc.sothuchi.item.Pay;
 import com.example.anhlamrduc.sothuchi.item.SpendingItem;
 import com.example.anhlamrduc.sothuchi.item.Receiver;
 import com.example.anhlamrduc.sothuchi.item.Borrower;
+import com.example.anhlamrduc.sothuchi.utils.Constant;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by AnhlaMrDuc on 23-Apr-16.
@@ -33,31 +35,20 @@ public class PayController extends SQLiteAssetHelper {
     private static final String KEY_DATE = "Ngay";
 
     private static final String DB_TABLE_PAY = "ChiTien";
-    private static final String DB_TABLE_ACCOUNT = "TaiKhoanr";
-    private static final String DB_TABLE_SPENDING = "SpendingItem";
-    private static final String DB_TABLE_LENDER = "Lender";
-    private static final String DB_TABLE_BORROWER = "Borrower";
-    private static final String DB_TABLE_RECEIVER_ = "Receiver";
-    private static final String DB_TABLE_EVENT = "Event";
-
-    private static final String DB_NAME = "misa.sqlite";
-    private static final int DB_VERSION = 1;
 
     public PayController(Context con) {
-        super(con, DB_NAME, null, DB_VERSION);
+        super(con, DBConstant.DB_NAME, null, DBConstant.DB_VERSION);
     }
 
-    /**
-     * @return list Account
-     */
-    public ArrayList<Pay> getPay() {
+    public ArrayList<Pay> getAllPay() {
 
         ArrayList<Pay> listPay = new ArrayList<>();
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
             String sql = "SELECT MaChiTien, SoTien, Ngay, MoTa, TenTaiKhoan, TenMucChi, TenNguoiChoVay, TenNguoiVay, TenNguoiDuocChi, TenSuKien \n" +
-                    "FROM Pay ct, Account tk, SpendingItem mc, Lender ncv, Borrower nv, Receiver ndc, Event sk\n" +
+                    "FROM ChiTien ct, TaiKhoan tk, MucChi mc, NguoiChoVay ncv, NguoiVay nv, " +
+                    "NguoiDuocChi ndc, SuKien sk\n" +
                     "WHERE ct.MaTaiKhoan = tk.MaTaiKhoan " +
                     "AND ct.MaMucChi = mc.MaMucChi " +
                     "AND  ct.MaNguoiChoVay = ncv.MaNguoiChoVay " +
@@ -68,8 +59,8 @@ public class PayController extends SQLiteAssetHelper {
             Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {
                 do {
-                    Account taikhoan = new Account();
-                    taikhoan.setAccountName(cs.getString(cs.getColumnIndex("TenTaiKhoan")));
+                    Account account = new Account();
+                    account.setAccountName(cs.getString(cs.getColumnIndex("TenTaiKhoan")));
 
                     SpendingItem spendingItem = new SpendingItem();
                     spendingItem.setSpendingItemName(cs.getString(cs.getColumnIndex("TenMucChi")));
@@ -86,12 +77,11 @@ public class PayController extends SQLiteAssetHelper {
                     Event event = new Event();
                     event.setEventName(cs.getString(cs.getColumnIndex("TenSuKien")));
 
-                    int maChiTien = cs.getInt(cs.getColumnIndex(KEY_ID));
-                    double soTien = cs.getDouble(cs.getColumnIndex(KEY_MONEY));
-                    String mota = cs.getString(cs.getColumnIndex(KEY_NOTE));
-                    String ngay = cs.getString(cs.getColumnIndex(KEY_DATE));
-
-                    Pay pay = new Pay(maChiTien, soTien, ngay, mota, taikhoan, spendingItem,
+                    int payID = cs.getInt(cs.getColumnIndex(KEY_ID));
+                    double amount = cs.getDouble(cs.getColumnIndex(KEY_MONEY));
+                    String description = cs.getString(cs.getColumnIndex(KEY_NOTE));
+                    Date day = Constant.VN_DATE_FORMAT.parse(cs.getString(cs.getColumnIndex(KEY_DATE)));
+                    Pay pay = new Pay(payID, amount, day, description, account, spendingItem,
                             lender, borrower, receiver, event);
                     listPay.add(pay);
 
@@ -112,7 +102,7 @@ public class PayController extends SQLiteAssetHelper {
             SQLiteDatabase db = getReadableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_MONEY, pay.getMoney());
-            contentValues.put(KEY_DATE, pay.getPayDate());
+            contentValues.put(KEY_DATE, pay.getPayDate().toString());
             contentValues.put(KEY_NOTE, pay.getDescription());
             contentValues.put(KEY_ACCOUNT_ID, pay.getAccount().getAccountID());
             contentValues.put(KEY_BORROWER_ID, pay.getBorrower().getBorrowerID());
@@ -134,7 +124,7 @@ public class PayController extends SQLiteAssetHelper {
             SQLiteDatabase db = getReadableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_MONEY, pay.getMoney());
-            contentValues.put(KEY_DATE, pay.getPayDate());
+            contentValues.put(KEY_DATE, pay.getPayDate().toString());
             contentValues.put(KEY_NOTE, pay.getDescription());
             contentValues.put(KEY_ACCOUNT_ID, pay.getAccount().getAccountID());
             contentValues.put(KEY_BORROWER_ID, pay.getBorrower().getBorrowerID());

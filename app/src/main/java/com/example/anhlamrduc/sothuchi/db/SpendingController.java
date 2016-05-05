@@ -1,7 +1,9 @@
 package com.example.anhlamrduc.sothuchi.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.anhlamrduc.sothuchi.item.SpendingItem;
@@ -21,11 +23,24 @@ public class SpendingController extends SQLiteAssetHelper {
 
     private static final String DB_TABLE = "MucChi";
 
-    private static final String DB_NAME = "misa.sqlite";
-    private static final int DB_VERSION = 1;
-
     public SpendingController(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, DBConstant.DB_NAME, null, DBConstant.DB_VERSION);
+    }
+
+    public long addSpendingItem(SpendingItem spendingItem) {
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_NAME, spendingItem.getSpendingItemName());
+            contentValues.put(KEY_NOTE, spendingItem.getNote());
+            contentValues.put(KEY_PARENT_NAME, spendingItem.getParentItem());
+            return db.insert(DB_TABLE, null, contentValues);
+        } catch (SQLException e) {
+            e.getMessage();
+        } finally {
+            close();
+        }
+        return 0;
     }
 
     /**
@@ -51,7 +66,7 @@ public class SpendingController extends SQLiteAssetHelper {
 
                 } while (cs.moveToNext());
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.getMessage();
         } finally {
             close();

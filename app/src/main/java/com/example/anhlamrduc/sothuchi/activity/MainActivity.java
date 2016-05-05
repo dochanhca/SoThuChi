@@ -1,7 +1,10 @@
 package com.example.anhlamrduc.sothuchi.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -13,25 +16,30 @@ import android.widget.Toast;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.adapter.MyPagerAdapter;
+import com.example.anhlamrduc.sothuchi.asynctask.DBInsertAReceiveItem;
+import com.example.anhlamrduc.sothuchi.asynctask.DBInsertAReceiveMoney;
+import com.example.anhlamrduc.sothuchi.asynctask.DBInsertASpendingItem;
+import com.example.anhlamrduc.sothuchi.asynctask.DBInsertATransfer;
 import com.example.anhlamrduc.sothuchi.asynctask.DBInsertPay;
+import com.example.anhlamrduc.sothuchi.asynctask.DBUpdateAccountAmount;
 import com.example.anhlamrduc.sothuchi.db.AccountController;
 import com.example.anhlamrduc.sothuchi.db.ReceiverController;
-import com.example.anhlamrduc.sothuchi.db.SpendingController;
 import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
-import com.example.anhlamrduc.sothuchi.fragment.DescriptionFragment;
+import com.example.anhlamrduc.sothuchi.fragment.AddReceiveItemFragment;
+import com.example.anhlamrduc.sothuchi.fragment.AddSpendItemFragment;
 import com.example.anhlamrduc.sothuchi.fragment.LimitFragment;
-import com.example.anhlamrduc.sothuchi.fragment.ListSpendItemFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
-import com.example.anhlamrduc.sothuchi.fragment.ReceiverFragment;
 import com.example.anhlamrduc.sothuchi.fragment.ReportFragment;
-import com.example.anhlamrduc.sothuchi.fragment.SelectAccountFragment;
-import com.example.anhlamrduc.sothuchi.fragment.TripFragment;
 import com.example.anhlamrduc.sothuchi.fragment.UtilitiesFragment;
 import com.example.anhlamrduc.sothuchi.item.Account;
 import com.example.anhlamrduc.sothuchi.item.Pay;
+import com.example.anhlamrduc.sothuchi.item.ReceiveItem;
+import com.example.anhlamrduc.sothuchi.item.ReceiveMoney;
 import com.example.anhlamrduc.sothuchi.item.Receiver;
 import com.example.anhlamrduc.sothuchi.item.SpendingItem;
+import com.example.anhlamrduc.sothuchi.item.Transfer;
+import com.example.anhlamrduc.sothuchi.utils.MyService;
 
 import java.util.ArrayList;
 
@@ -39,25 +47,32 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NoteFragment.OnPassDataFromNote,
-        ListSpendItemFragment.OnDataPassFromListSpendItem,
-        DescriptionFragment.OnDataPassDataFromDescription,
-        SelectAccountFragment.OnDataPassFromSelectAccount,
-        ReceiverFragment.onDataPassFromReceiver,
-        TripFragment.OnDataPassFromTrip{
+        AddSpendItemFragment.OnPassDataFromAddSpendItem,
+        AddReceiveItemFragment.OnPassDataFromAddReceiveItem {
 
     public static final String TAG = "Main activity: ";
-    public static final String LIST_ACCOUNT_FROM_MAIN = "list of account";
+    public static final String LIST_ACCOUNT_FROM_DB = "list of account";
     public static final String TOTAL_MONEY_FROM_MAIN = "total money";
-    public static final String LIST_SPENDING_FROM_MAIN = "list of spending";
-    public static final String SPENDING_RECEIVE_FROM_LIST_SPENDING = "spending received";
+    public static final String MONEY_FROM_NOTE = "money";
+    public static final String LIST_SPENDING_FROM_DB = "list of spending";
+    public static final String SPENDING_ITEM_FROM_LIST_SPENDING = "spending received";
     public static final String DESCRIPTION_SPENDING = "description spending";
-    public static final String ACCOUNT_FROM_SELECT_ACCOUNT = "account name";
+    public static final String FROM_ACCOUNT_SELECTED = "From account name";
     public static final String RECEIVER_NAME = "receiver name";
+    public static final String LENDER = "lender";
     public static final String LIST_RECEIVER_FROM_MAIN = "list of receiver";
     public static final String TRIP_OR_EVENT = "trip or event";
+    public static final String PAY_DATE = "pay date";
+    public static final String DEFAULT_ACCOUNT = "default account";
+    public static final String TO_ACCOUNT_SELECTED = "To account name";
+    public static final String TRANSFER_FEE_FROM_NOTE = "Transfer fee";
+    public static final String LIST_RECEIVE_ITEM_FROM_DB = "list receive item";
+    public static final String RECEIVE_ITEM_NAME_FROM_LIST_RECEIVE = "receive item name";
+    public static final String SPENDING_ITEM_PARENT_NAME = "Spending Item Parent";
+    public static final String NEW_SPENDING_ITEM = "New spending item";
+    public static final String NEW_RECEIVE_ITEM = "New receive item";
 
     private AccountController db_account;
-    private SpendingController db_spending;
     private ReceiverController db_receiver;
     private MyPagerAdapter myPagerAdapter;
 
@@ -67,11 +82,11 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     private Bundle bundle_to_report;
     private Bundle bundle_to_utility;
 
-    private SpendingItem spendingReceived;
-    private Account accountReceived;
-    private String descriptionReceived = "";
-    private String receiverReceived = "";
-    private String tripReceived = "";
+    ArrayList<SpendingItem> listSpendingItem = new ArrayList<>();
+    ArrayList<ReceiveItem> listReceiveItem = new ArrayList<>();
+    ArrayList<Account> listAccount = new ArrayList<>();
+    private ProgressDialog dialog;
+    private boolean douubleBackPressed = false;
 
     private FragmentManager fragmentManager;
 
@@ -85,9 +100,15 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        startService(new Intent(this, MyService.class));
+        dialog = new ProgressDialog(this);
+
         db_account = new AccountController(this);
-        db_spending = new SpendingController(this);
         db_receiver = new ReceiverController(this);
+        listReceiveItem = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB);
+        listSpendingItem = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB);
+        listAccount = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_DB);
         //Send data to Fragment via bundle
         putBundleToNote();
         putBundleToAcount();
@@ -136,21 +157,29 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         super.onDestroy();
         Log.e(TAG, "onDestroy");
         db_account.close();
-        db_spending.close();
     }
 
+    /**
+     * Receive a pay from NoteFragment and insert to db with asynctask
+     *
+     * @param pay
+     */
     @Override
-    public void onDataInsertToDBFromNote(Pay pay) {
+    public void onPayInsertToDBFromNote(Pay pay) {
         Log.e(TAG, "Pay received");
-        final ProgressDialog dialog = new ProgressDialog(this);
+        double money = pay.getAccount().getCurrentMoney() - pay.getMoney();
+        pay.getAccount().setCurrentMoney(money);
+//        final ProgressDialog dialog = new ProgressDialog(this);
+        /* Insert a new pay */
         DBInsertPay dbInsertPay = new DBInsertPay(this) {
             @Override
             protected void onPreExecute() {
-//                dialog.setTitle("Wait");
-//                dialog.setMessage("Đang ghi");
                 dialog.show();
             }
-
+        };
+        dbInsertPay.execute(pay);
+        /* Update amount of account*/
+        DBUpdateAccountAmount dbUpdateAccountAmount = new DBUpdateAccountAmount(this) {
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 super.onPostExecute(aBoolean);
@@ -160,38 +189,136 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
                 Toast.makeText(MainActivity.this, getString(R.string.write_success), Toast.LENGTH_SHORT).show();
             }
         };
-        dbInsertPay.execute(pay);
-        myPagerAdapter.onDataInsertToDBFromNote(pay);
+        dbUpdateAccountAmount.execute(pay.getAccount());
+        myPagerAdapter.onPayInsertToDBFromNote(pay);
     }
 
+    /**
+     * Receive a ReceiveMoney from NoteFragment and insert to db with asynctask
+     *
+     * @param receiveMoney
+     */
     @Override
-    public void onDataReceivedFromListSpendItem(SpendingItem spending) {
-        spendingReceived = spending;
-        replaceView(R.id.fr_list_spend_item_container);
+    public void onReceiveMoneyInsertToDBFromNote(ReceiveMoney receiveMoney) {
+        double money = receiveMoney.getAccount().getCurrentMoney() + receiveMoney.getAmount();
+        receiveMoney.getAccount().setCurrentMoney(money);
+//        final ProgressDialog dialog = new ProgressDialog(this);
+        /* Insert New Receive Money*/
+        DBInsertAReceiveMoney dbInsertAReceiveMoney = new DBInsertAReceiveMoney(this) {
+            @Override
+            protected void onPreExecute() {
+                dialog.show();
+            }
+        };
+        dbInsertAReceiveMoney.execute(receiveMoney);
+        /* Update amount of account */
+        DBUpdateAccountAmount dbUpdateAccountAmount = new DBUpdateAccountAmount(this) {
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                Toast.makeText(MainActivity.this, getString(R.string.write_success), Toast.LENGTH_SHORT).show();
+            }
+        };
+        dbUpdateAccountAmount.execute(receiveMoney.getAccount());
+        myPagerAdapter.onReceiveMoneyInsertToDBFromNote(receiveMoney);
     }
 
+    /**
+     * Receive a transfer from NoteFragment and insert to db with asyntask
+     *
+     * @param transfer
+     */
     @Override
-    public void onReceivedDataFromDescription(String description) {
-        descriptionReceived = description;
-        replaceView(R.id.fr_description);
+    public void onTransferInsertToDBFromNote(Transfer transfer) {
+        /* Insert a new transfer */
+        DBInsertATransfer dbInsertATransfer = new DBInsertATransfer(this) {
+            @Override
+            protected void onPreExecute() {
+                dialog.show();
+            }
+        };
+        dbInsertATransfer.execute(transfer);
+        /* Update amount of send account*/
+        double amountSendAccount = transfer.getFromAccount().getCurrentMoney() - transfer.getAmount()
+                - transfer.getTransferFee();
+        transfer.getFromAccount().setCurrentMoney(amountSendAccount);
+        DBUpdateAccountAmount dbUpdateAccountAmount = new DBUpdateAccountAmount(this);
+        dbUpdateAccountAmount.execute(transfer.getFromAccount());
+        /*Update amount of receive account*/
+        double amountReceiveAccount = transfer.getToAccount().getCurrentMoney() + transfer.getAmount();
+        transfer.getToAccount().setCurrentMoney(amountReceiveAccount);
+        DBUpdateAccountAmount dbUpdateAccountAmount1 = new DBUpdateAccountAmount(this) {
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this, getString(R.string.write_success), Toast.LENGTH_SHORT).show();
+            }
+        };
+        dbUpdateAccountAmount1.execute(transfer.getToAccount());
+        myPagerAdapter.onTransferInsertToDBFromNote(transfer);
     }
 
+    /**
+     * Receive a spending item from AddSpendingItemFragment and insert to db with asynctask
+     *
+     * @param spendingItem
+     */
     @Override
-    public void onDataReceivedFromSelectAccount(Account account) {
-        accountReceived = account;
-        replaceView(R.id.fr_account);
+    public void onSpendItemInsertToDB(SpendingItem spendingItem) {
+        /* Insert new SpendingItem */
+        DBInsertASpendingItem dbInsertASpendingItem = new DBInsertASpendingItem(this) {
+            @Override
+            protected void onPreExecute() {
+                dialog.show();
+            }
+
+            @Override
+            protected void onPostExecute(Long aLong) {
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this, getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
+            }
+        };
+        dbInsertASpendingItem.execute(spendingItem);
     }
 
+    /**
+     * Receive a receive item from AddReceiveItemFragment and insert to db with asynctask
+     *
+     * @param receiveItem
+     */
     @Override
-    public void onReceivedDataFromReceiver(String receiver) {
-        receiverReceived = receiver;
-        replaceView(R.id.fr_receiver);
+    public void onReceiveItemInsertToDBFromAddReceive(ReceiveItem receiveItem) {
+        /* Insert new ReceiveItem */
+        DBInsertAReceiveItem dbInsertAReceiveItem = new DBInsertAReceiveItem(this) {
+            @Override
+            protected void onPreExecute() {
+                dialog.show();
+            }
+
+            @Override
+            protected void onPostExecute(Long aLong) {
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this, getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
+            }
+        };
+        dbInsertAReceiveItem.execute(receiveItem);
+
     }
 
-    @Override
-    public void onReceivedDataFromTrip(String trip) {
-        tripReceived = trip;
-        replaceView(R.id.fr_trip);
+    public static void startActivity(Activity activity, ArrayList<ReceiveItem> listReceiveItem,
+                                     ArrayList<SpendingItem> listSpendingItem, ArrayList<Account> listAccount) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB, listSpendingItem);
+        args.putParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB, listReceiveItem);
+        args.putParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_DB, listAccount);
+        intent.putExtras(args);
+
+        activity.startActivity(intent);
+
     }
 
     /**
@@ -200,22 +327,16 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     private void putBundleToAcount() {
         //
         bundle_to_account = new Bundle();
-        bundle_to_account.putParcelableArrayList(LIST_ACCOUNT_FROM_MAIN, getListAccount());
+        bundle_to_account.putParcelableArrayList(LIST_ACCOUNT_FROM_DB, listAccount);
         bundle_to_account.putDouble(TOTAL_MONEY_FROM_MAIN, getSumMoney());
     }
 
     private void putBundleToNote() {
         bundle_to_note = new Bundle();
-//        bundle_to_note.putParcelableArrayList(LIST_ACCOUNT_FROM_MAIN, getListAccount());
-        bundle_to_note.putParcelableArrayList(LIST_SPENDING_FROM_MAIN, getListSpending());
+        bundle_to_note.putParcelableArrayList(LIST_SPENDING_FROM_DB, listSpendingItem);
         bundle_to_note.putParcelableArrayList(LIST_RECEIVER_FROM_MAIN, getListReceiver());
-        bundle_to_note.putParcelable(ACCOUNT_FROM_SELECT_ACCOUNT, getListAccount().get(0));
-        //
-        bundle_to_note.putParcelable(SPENDING_RECEIVE_FROM_LIST_SPENDING, spendingReceived);
-        bundle_to_note.putString(TRIP_OR_EVENT, tripReceived);
-        bundle_to_note.putString(RECEIVER_NAME, receiverReceived);
-        bundle_to_note.putParcelable(ACCOUNT_FROM_SELECT_ACCOUNT, accountReceived);
-        bundle_to_note.putString(DESCRIPTION_SPENDING, descriptionReceived);
+        bundle_to_note.putParcelableArrayList(LIST_RECEIVE_ITEM_FROM_DB, listReceiveItem);
+        bundle_to_note.putParcelable(DEFAULT_ACCOUNT, listAccount.get(0));
     }
 
     /**
@@ -253,29 +374,14 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         noteContainerFragment.setArguments(bundle_to_note);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(cotainerViewID, noteContainerFragment, NoteContainerFragment.NOTE_CONTAINER_FRAG);
+        transaction.replace(cotainerViewID, noteContainerFragment, NoteContainerFragment.NOTE_FRAG);
         transaction.commit();
         fragmentManager.popBackStack();
-    }
-
-    public ArrayList<Account> getListAccount() {
-
-        ArrayList<Account> arr = db_account.getListAccount();
-        return arr;
-    }
-
-    public ArrayList<SpendingItem> getListSpending() {
-        ArrayList<SpendingItem> arr = db_spending.getListSpending();
-        return arr;
     }
 
     private ArrayList<? extends Parcelable> getListReceiver() {
         ArrayList arr = db_receiver.getListReceiver();
         return arr;
-    }
-
-    public long insertAReceiver(Receiver receiver) {
-        return db_receiver.addReceiver(receiver);
     }
 
     public Receiver getAReceiver(int id) {
@@ -287,5 +393,25 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     private double getSumMoney() {
         db_account = new AccountController(this);
         return db_account.getSumMoney();
+    }
+
+    public ArrayList<Account> getListAccount() {
+        return listAccount;
+    }
+
+    @Override
+    public void onBackPressed() {
+            if (douubleBackPressed || getSupportFragmentManager().getBackStackEntryCount()> 0) {
+                super.onBackPressed();
+                return;
+            }
+            this.douubleBackPressed = true;
+            Toast.makeText(this, getString(R.string.double_press_to_exit_app), Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    douubleBackPressed = false;
+                }
+            }, 2000);
     }
 }

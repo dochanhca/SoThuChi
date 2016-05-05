@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/bg_gray"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true">
     <LinearLayout
         android:background="@color/header_blue"
         android:id="@+id/ll_list_account"
@@ -32,6 +33,7 @@
             android:id="@+id/txt_done"
             style="@style/text_header"
             android:gravity="center"
+            android:clickable="true"
             android:layout_gravity="center_vertical"
             android:paddingRight="@dimen/margin_10dp"
             android:paddingLeft="@dimen/margin_5dp"

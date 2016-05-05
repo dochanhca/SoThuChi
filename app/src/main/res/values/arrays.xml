@@ -4,16 +4,14 @@
         <item>Chi tiền</item>
         <item>Thu tiền</item>
         <item>Chuyển khoản</item>
-        <item>Ghi theo tiền còn</item>
     </string-array>
     <string-array name="spn_note_detail">
         <item>Khi chi tiêu, cho vay, trả nợ.</item>
         <item>Khi có khoản thu nhập, đi vay, thu nợ.</item>
         <item>Chuyển tiền giữa các tài khoản trong Sổ của bạn.</item>
-        <item>Tính và ghi số tiền đã chi/thu theo số tiền đang còn.</item>
     </string-array>
-    <string-array name="spn_spend_title" >
-    <item>Chi tiêu</item>
+    <string-array name="spn_spend_title">
+        <item>Chi tiêu</item>
         <item>Vay nợ</item>
     </string-array>
     <string-array name="spn_spend_detail">

@@ -10,7 +10,10 @@
     <color name="btn_write_cyan">#60b4b4</color>
     <color name="btn_add_green">#24825e</color>
     <color name="btn_save_green">#258963</color>
+    <color name="btn_save_green_selected">#3aaa7c</color>
     <color name="normal_gray">#cecece</color>
+    <color name="super_dark_gray">#cdcdcd</color>
     <color name="light_gray">#ece9e9</color>
     <color name="dark_gray">#d8d8d8</color>
+    <color name="header_dialog_blue">#4fbcb6</color>
 </resources>

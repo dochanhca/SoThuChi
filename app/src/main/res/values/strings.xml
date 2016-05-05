@@ -32,7 +32,7 @@
     <string name="search">Tìm kiếm</string>
     <string name="done">Xong</string>
     <string name="note">Ghi chép</string>
-    <string name="limit">Hạn mức chi</string>
+    <string name="limit">Hạn mức</string>
     <string name="report">Báo cáo</string>
     <string name="utilities">Tiện ích</string>
     <string name="tab_date">Ngày</string>
@@ -44,5 +44,25 @@
     <string name="select_or_input_trip">Chọn hoặc nhập Chuyến đi sự kiện</string>
     <string name="spending_cant_be_blank">Mục chi không được để trống</string>
     <string name="write_success">Ghi thành công</string>
+    <string name="write">Ghi</string>
+    <string name="writed">Đã ghi</string>
+    <string name="sum_title">Tổng còn:</string>
+    <string name="to">Vào tài khoản</string>
+    <string name="receive">Mục thu</string>
+    <string name="transfer_fee">Phí chuyển khoản</string>
+    <string name="splash_text">Quản lý chi tiêu</string>
+    <string name="receive_cant_be_blank">Mục thu không được để trống</string>
+    <string name="account_cant_same">Bạn không thể chuyển khoản trong cùng 1 tài khoản</string>
+    <string name="amount_must_greater_than_0">Số tiền phải lớn hơn 0</string>
+    <string name="spending_item_parent">Hạng mục cha</string>
+    <string name="spend_item_cant_be_blank">Mục chi không được để trống</string>
+    <string name="spend_item_already_exists">Mục chi đã tồn tại</string>
+    <string name="insert_success">Thêm thành công</string>
+    <string name="receive_item_cant_be_blank">Tên mục thu không được để trống</string>
+    <string name="receive_item_already_exists">Mục thu đã tồn tại</string>
+    <string name="double_press_to_exit_app">Nhấn thêm lần nữa để thoát</string>
+    <string name="account_type">Loại tài khoản</string>
+    <string name="first_amount">Số tiền ban đầu</string>
+    <string name="account_name">Tên tài khoản</string>
 
 </resources>

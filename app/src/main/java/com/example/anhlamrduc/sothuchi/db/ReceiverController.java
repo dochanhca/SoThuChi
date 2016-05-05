@@ -19,11 +19,8 @@ public class ReceiverController extends SQLiteAssetHelper {
     private static final String KEY_NAME = "TenNguoiDuocChi";
     private static final String DB_TABLE = "NguoiDuocChi";
 
-    private static final String DB_NAME = "misa.sqlite";
-    private static final int DB_VERSION = 1;
-
     public ReceiverController(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, DBConstant.DB_NAME, null, DBConstant.DB_VERSION);
     }
 
     /**

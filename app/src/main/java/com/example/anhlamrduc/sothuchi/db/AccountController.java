@@ -26,11 +26,9 @@ public class AccountController extends SQLiteAssetHelper {
     private static final String DB_TABLE = "TaiKhoan";
     private static final String DB_TABLE_LOAITK = "LoaiTaiKhoan";
 
-    private static final String DB_NAME = "misa.sqlite";
-    private static final int DB_VERSION = 1;
 
     public AccountController(Context con) {
-        super(con, DB_NAME, null, DB_VERSION);
+        super(con, DBConstant.DB_NAME, null, DBConstant.DB_VERSION);
     }
 
     /**
@@ -51,7 +49,7 @@ public class AccountController extends SQLiteAssetHelper {
                 do {
                     AccountType accountType = new AccountType();
                     accountType.setTypeID(cs.getInt(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID)));
-                    int accountID = cs.getInt(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID));
+                    int accountID = cs.getInt(cs.getColumnIndex(KEY_ID));
                     String accountName = cs.getString(cs.getColumnIndex(KEY_NAME));
                     double firstMoney = cs.getDouble(cs.getColumnIndex(KEY_FIST_MONEY));
                     double currentMoney = cs.getDouble(cs.getColumnIndex(KEY_CURRENT_MONEY));
@@ -158,5 +156,20 @@ public class AccountController extends SQLiteAssetHelper {
             close();
         }
         return 0;
+    }
+
+    public Boolean updateAccountAmount(Account account) {
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            String sql = "UPDATE " + DB_TABLE + " SET " + KEY_CURRENT_MONEY + "=" + account.getCurrentMoney()
+                    + " WHERE " + KEY_ID + "=" + account.getAccountID();
+            db.execSQL(sql);
+            return true;
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            close();
+        }
+        return false;
     }
 }

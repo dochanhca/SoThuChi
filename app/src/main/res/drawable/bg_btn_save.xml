@@ -1,0 +1,32 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Normal -->
+    <item android:state_pressed="false" android:state_selected="false">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <!-- Set màu nền -->
+            <solid android:color="@color/btn_save_green"></solid>
+
+            <!-- và đây là bán kính đường tròn ở 4 góc -->
+            <corners android:radius="5dp"></corners>
+        </shape>
+    </item>
+    <!--Selected but not pressed-->
+    <item android:state_pressed="false" android:state_selected="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <!-- Set màu nền -->
+            <solid android:color="@color/btn_save_green_selected"></solid>
+
+            <!-- và đây là bán kính đường tròn ở 4 góc -->
+            <corners android:radius="5dp"></corners>
+        </shape>
+    </item>
+
+    <!--pressed-->
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <!-- Set màu nền -->
+            <solid android:color="@color/btn_save_green_selected"></solid>
+            <!-- và đây là bán kính đường tròn ở 4 góc -->
+            <corners android:radius="5dp"></corners>
+        </shape>
+    </item>
+</selector>

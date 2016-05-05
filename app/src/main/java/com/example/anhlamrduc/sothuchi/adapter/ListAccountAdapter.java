@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.db.AccountController;
 import com.example.anhlamrduc.sothuchi.item.Account;
-import com.example.anhlamrduc.sothuchi.utility.Currency;
+import com.example.anhlamrduc.sothuchi.utils.Currency;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
         Account account = getItem(position);
         ViewHolder viewHolder;
 
-        String imgName = getImageName(account.getAccountID());
+        String imgName = getImageName(account.getAccountType().getTypeID());
 
         convertView = layoutInflater.inflate(R.layout.item_account, parent, false);
         viewHolder = new ViewHolder(convertView);
@@ -56,7 +56,7 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
         ImageView imgIcon;
         @Bind(R.id.img_edit)
         ImageView imgEdit;
-        @Bind(R.id.txt_account_name)
+        @Bind(R.id.txt_from_account_name)
         TextView txtAccountName;
         @Bind(R.id.txt_account_money)
         TextView txtMoney;

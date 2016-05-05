@@ -3,13 +3,15 @@ package com.example.anhlamrduc.sothuchi.item;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Created by AnhlaMrDuc on 21-Apr-16.
  */
 public class Pay implements Parcelable {
     private int payID;
     private double money;
-    private String payDate;
+    private Date payDate;
     private String description;
     private Account account;
     private SpendingItem spendingItem;
@@ -21,7 +23,7 @@ public class Pay implements Parcelable {
     public Pay() {
     }
 
-    public Pay(int payID, double money, String payDate, String description, Account account,
+    public Pay(int payID, double money, Date payDate, String description, Account account,
                SpendingItem spendingItem, Lender lender, Borrower borrower,
                Receiver receiver, Event event) {
         this.payID = payID;
@@ -35,6 +37,30 @@ public class Pay implements Parcelable {
         this.receiver = receiver;
         this.event = event;
     }
+
+    protected Pay(Parcel in) {
+        payID = in.readInt();
+        money = in.readDouble();
+        description = in.readString();
+        account = in.readParcelable(Account.class.getClassLoader());
+        spendingItem = in.readParcelable(SpendingItem.class.getClassLoader());
+        lender = in.readParcelable(Lender.class.getClassLoader());
+        borrower = in.readParcelable(Borrower.class.getClassLoader());
+        receiver = in.readParcelable(Receiver.class.getClassLoader());
+        event = in.readParcelable(Event.class.getClassLoader());
+    }
+
+    public static final Creator<Pay> CREATOR = new Creator<Pay>() {
+        @Override
+        public Pay createFromParcel(Parcel in) {
+            return new Pay(in);
+        }
+
+        @Override
+        public Pay[] newArray(int size) {
+            return new Pay[size];
+        }
+    };
 
     public int getPayID() {
         return payID;
@@ -52,11 +78,11 @@ public class Pay implements Parcelable {
         this.money = money;
     }
 
-    public String getPayDate() {
+    public Date getPayDate() {
         return payDate;
     }
 
-    public void setPayDate(String payDate) {
+    public void setPayDate(Date payDate) {
         this.payDate = payDate;
     }
 
@@ -116,30 +142,6 @@ public class Pay implements Parcelable {
         this.event = event;
     }
 
-    protected Pay(Parcel in) {
-        payID = in.readInt();
-        money = in.readDouble();
-        payDate = in.readString();
-        description = in.readString();
-        account = in.readParcelable(Account.class.getClassLoader());
-        spendingItem = in.readParcelable(SpendingItem.class.getClassLoader());
-        lender = in.readParcelable(Lender.class.getClassLoader());
-        borrower = in.readParcelable(Borrower.class.getClassLoader());
-        receiver = in.readParcelable(Receiver.class.getClassLoader());
-        event = in.readParcelable(Event.class.getClassLoader());
-    }
-
-    public static final Creator<Pay> CREATOR = new Creator<Pay>() {
-        @Override
-        public Pay createFromParcel(Parcel in) {
-            return new Pay(in);
-        }
-
-        @Override
-        public Pay[] newArray(int size) {
-            return new Pay[size];
-        }
-    };
 
     @Override
 
@@ -149,9 +151,9 @@ public class Pay implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+
         dest.writeInt(payID);
         dest.writeDouble(money);
-        dest.writeString(payDate);
         dest.writeString(description);
         dest.writeParcelable(account, flags);
         dest.writeParcelable(spendingItem, flags);
@@ -160,4 +162,5 @@ public class Pay implements Parcelable {
         dest.writeParcelable(receiver, flags);
         dest.writeParcelable(event, flags);
     }
+
 }

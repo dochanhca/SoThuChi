@@ -18,9 +18,9 @@ import java.util.List;
 /**
  * Created by AnhlaMrDuc on 01-Apr-16.
  */
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableListSpendingAdapter extends BaseExpandableListAdapter {
 
-    private static final String TAG = "Expendable listview: ";
+    private static final String TAG = "Expendable ListSpending: ";
     private Context _context;
     private List<SpendingItem> listDataHeader; // header titles
     private List<SpendingItem> listDateHeaderToSearch;
@@ -28,8 +28,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<SpendingItem>> listDataChild;
     private HashMap<String, List<SpendingItem>> listDataChildToSearch;
 
-    public ExpandableListAdapter(Context context, List<SpendingItem> listDataHeader,
-                                 HashMap<String, List<SpendingItem>> listChildData) {
+    public ExpandableListSpendingAdapter(Context context, List<SpendingItem> listDataHeader,
+                                         HashMap<String, List<SpendingItem>> listChildData) {
         this._context = context;
         this.listDataHeader = listDataHeader;
         this.listDateHeaderToSearch = listDataHeader;
@@ -51,12 +51,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = getChild(groupPosition, childPosition).getSpendingItemName();
+        final String childText = getChild(groupPosition, childPosition).getSpendingItemName().trim();
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_spending_item, parent, false);
+            convertView = infalInflater.inflate(R.layout.item_spending_item, parent, false);
         }
 
         TextView txtListChild = (TextView) convertView
@@ -90,11 +90,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded,
                              View convertView, final ViewGroup parent) {
-        String headerTitle = getGroup(groupPosition).getSpendingItemName();
+        String headerTitle = getGroup(groupPosition).getSpendingItemName().trim();
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_spending_group, parent, false);
+            convertView = infalInflater.inflate(R.layout.item_spending_group, parent, false);
         }
 
         TextView txtSpendingParent = (TextView) convertView

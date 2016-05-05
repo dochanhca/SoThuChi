@@ -1,4 +1,4 @@
-package com.example.anhlamrduc.sothuchi.utility;
+package com.example.anhlamrduc.sothuchi.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;

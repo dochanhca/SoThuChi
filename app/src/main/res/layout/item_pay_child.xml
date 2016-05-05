@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/lv_child_pay_height"
+    android:background="@drawable/bg_list_item"
+    >
+    <TextView
+        android:id="@+id/txt_spending_item"
+        style="@style/txt_list_pay_child"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:text="Chi: Điện thoại di động"
+        android:layout_marginRight="100dp"
+        android:singleLine="true"/>
+    <TextView
+        android:id="@+id/txt_description"
+        style="@style/txt_list_pay_child"
+        android:textStyle="normal"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginRight="100dp"
+        android:layout_below="@+id/txt_spending_item"
+        android:singleLine="true"
+        android:text="Ăn chơi chác táng Ăn chơi chác táng Ăn chơi chác táng"/>
+    <TextView
+    android:id="@+id/txt_amount"
+    style="@style/txt_list_pay_child"
+    android:layout_marginTop="@dimen/normal_margin"
+    android:layout_alignParentRight="true"
+    android:text="100.000 đ"/>
+    <TextView
+        android:id="@+id/txt_from_account_name"
+        style="@style/txt_list_pay_child"
+        android:textStyle="normal"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_below="@+id/txt_amount"
+       android:layout_toLeftOf="@+id/img_account"
+        android:text="Ví"/>
+    <ImageView
+        android:id="@+id/img_account"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/txt_amount"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_10dp"
+        android:src="@drawable/ic_tab_account_32"/>
+</RelativeLayout>

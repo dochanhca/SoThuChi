@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/tab_layout_height">
+    android:layout_marginBottom="50.7dp">
 
     <LinearLayout
         android:background="@color/header_blue"
@@ -110,17 +110,4 @@
 
     </LinearLayout>
 </RelativeLayout>
-    <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/tabs"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:tabMode="fixed"-->
-        <!--app:tabGravity="fill"/>-->
-    <!--<android.support.v4.view.ViewPager-->
-        <!--android:id="@+id/viewpager"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"  />-->
-
-
 </LinearLayout>

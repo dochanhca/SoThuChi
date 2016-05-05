@@ -24,6 +24,9 @@
         android:layout_height="wrap_content"
         app:tabMode="fixed"
         app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
+        app:tabIndicatorHeight="2dp"
         android:layout_alignParentBottom="true"
+        android:paddingLeft="@dimen/margin_5dp"
         android:background="@color/tab_gray" />
 </RelativeLayout>
