@@ -25,9 +25,12 @@ public class NoteContainerFragment extends BaseFragment {
     public static final String TRIP_FRAGMENT = "TripFragment";
     public static final String SELECT_ACCOUNT_FRAG = "SelectAccountFragment";
     public static final String LIST_RECEIVE_ITEM_FRAG = "ListReceiveItemFragment";
+    public static final String TRANSACTION_FRAGMENT = "HistoryContanerFragment";
+    public static final String RECEIVE_HISTORY_FRAGMENT = "Receive HistoryFragment";
 
     private ArrayList<SpendingItem> spendingItems;
     private ArrayList<Receiver> receivers;
+    private ArrayList<Receiver> events;
     private ArrayList<ReceiveItem> receiveItems;
     private Account account;
 
@@ -45,7 +48,8 @@ public class NoteContainerFragment extends BaseFragment {
     protected void handleData() {
         //Receive a bundle
         spendingItems = getArguments().getParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB);
-        receivers = getArguments().getParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_MAIN);
+        receivers = getArguments().getParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_DB);
+        events = getArguments().getParcelableArrayList(MainActivity.LIST_EVENT_FROM_DB);
         receiveItems = getArguments().getParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB);
 
         account = getArguments().getParcelable(MainActivity.DEFAULT_ACCOUNT);
@@ -53,8 +57,9 @@ public class NoteContainerFragment extends BaseFragment {
         //Put bundle to Note Frag
         Bundle args = new Bundle();
         args.putParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB, spendingItems);
-        args.putParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_MAIN, receivers);
+        args.putParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_DB, receivers);
         args.putParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB, receiveItems);
+        args.putParcelableArrayList(MainActivity.LIST_EVENT_FROM_DB, events);
 
         args.putParcelable(MainActivity.DEFAULT_ACCOUNT, account);
         // Initiate Note Frag

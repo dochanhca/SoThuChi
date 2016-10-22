@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_solid_blue_dialog"
+    android:gravity="center"
+    android:orientation="vertical">
+    <TextView
+        android:text="@string/product_info"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="45dp" />
+
+    <ImageView
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_app_1" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginLeft="@dimen/margin_xlarge"
+        android:layout_marginRight="@dimen/margin_xlarge"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/version"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/txt_close"
+        android:text="@string/close"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@color/dark_gray"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+</LinearLayout>

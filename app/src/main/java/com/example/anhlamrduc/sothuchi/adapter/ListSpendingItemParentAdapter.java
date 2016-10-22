@@ -23,15 +23,22 @@ public class ListSpendingItemParentAdapter extends ArrayAdapter<SpendingItem> {
     LayoutInflater inflater;
 
     public ListSpendingItemParentAdapter(Context context, ArrayList<SpendingItem> list) {
-        super(context, -1,list);
+        super(context, -1, list);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         SpendingItem spendingItem = getItem(position);
-        convertView = inflater.inflate(R.layout.item_receive, parent, false);
-        ViewHolder viewHolder = new ViewHolder(convertView);
+        ViewHolder viewHolder;
+
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_receive, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else
+            viewHolder = (ViewHolder) convertView.getTag();
+
         viewHolder.txtSpendingParentName.setText(spendingItem.getSpendingItemName());
         return convertView;
     }

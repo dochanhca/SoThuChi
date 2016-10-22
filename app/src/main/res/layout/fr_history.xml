@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray"
+    android:layout_marginBottom="@dimen/tab_layout_height">
+    <LinearLayout
+        android:id="@+id/ll_list_account"
+        android:background="@color/header_blue"
+        android:layout_height="@dimen/header_height"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:gravity="center"
+            android:id="@+id/img_back"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/margin_10dp"
+            android:paddingRight="@dimen/margin_10dp"
+            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:background="@drawable/bg_btn_header_selected"
+            android:src="@drawable/ic_arrow_back" />
+
+        <Spinner
+            android:id="@+id/spn_note_action"
+            style="@style/text_header"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/sp_normal_height"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"
+            android:background="@drawable/bg_btn_border"
+            android:dropDownWidth="wrap_content"
+            android:gravity="center"
+            android:spinnerMode="dropdown"></Spinner>
+
+        <!--<ImageView-->
+            <!--android:gravity="center"-->
+            <!--android:id="@+id/img_add"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:background="@drawable/bg_btn_header_selected"-->
+            <!--android:src="@drawable/ic_add_account" />-->
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_spending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:transcriptMode="alwaysScroll">
+            </ListView>
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

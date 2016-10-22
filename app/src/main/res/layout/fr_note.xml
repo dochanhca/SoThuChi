@@ -26,7 +26,20 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_5dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_transaction_history" />
+                android:src="@drawable/ic_transaction_history"
+                />
+
+            <TextView
+                android:id="@+id/txt_cancel"
+                style="@style/text_header"
+                android:text="Hủy"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/margin_10dp"
+                android:paddingRight="@dimen/margin_5dp"
+                android:layout_marginRight="@dimen/margin_5dp"
+                android:visibility="gone"
+                />
 
             <Spinner
                 android:id="@+id/spn_note_action"
@@ -183,7 +196,7 @@
                     android:text="@string/from" />
 
                 <TextView
-                    android:id="@+id/txt_from_account_name"
+                    android:id="@+id/txt_account_name"
                     style="@style/text_note_detail"
                     android:layout_weight="3"
                     android:text="Ví" />
@@ -262,7 +275,7 @@
                     android:id="@+id/txt_receiver"
                     style="@style/text_note_detail"
                     android:layout_weight="3"
-                    android:text="Vợ" />
+                    />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -289,8 +302,9 @@
                     android:id="@+id/txt_trip"
                     style="@style/text_note_detail"
                     android:layout_weight="3"
-                    android:text="@string/trip_or_event"
-                    android:textColor="@android:color/darker_gray" />
+                    android:hint="@string/trip_or_event"
+                    android:text=""
+                    android:textColor="@android:color/black" />
 
             </LinearLayout>
         </LinearLayout>
@@ -328,31 +342,69 @@
 
 
         <LinearLayout
-            android:id="@+id/ll_add"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_10dp"
-            android:background="@drawable/bg_btn_save"
-            android:clickable="true"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/ll_add"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_save" />
+                android:layout_margin="@dimen/margin_10dp"
+                android:background="@drawable/bg_btn_save"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_save" />
+
+                <TextView
+                    android:id="@+id/txt_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_5dp"
+                    android:layout_marginLeft="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_5dp"
+                    android:text="@string/write"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_delete"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_5dp"
-                android:layout_marginLeft="@dimen/margin_5dp"
-                android:layout_marginTop="@dimen/margin_5dp"
-                android:text="@string/write"
-                android:textColor="@android:color/white"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:layout_margin="@dimen/margin_10dp"
+                android:background="@drawable/bg_btn_delete"
+                android:clickable="true"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_delete" />
+
+                <TextView
+                    android:id="@+id/txt_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_5dp"
+                    android:layout_marginLeft="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_5dp"
+                    android:text="@string/delete"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

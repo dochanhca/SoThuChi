@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spn_note_title">
+        <item>Expense</item>
+        <item>Income</item>
+        <item>Transfer</item>
+    </string-array>
+    <string-array name="spn_note_detail">
+        <item>When expending, lending, paying debts.</item>
+        <item>When having incomes, borrowing, collecting debts.</item>
+        <item>Transfer money between two of your accounts.</item>
+    </string-array>
+    <string-array name="spn_spend_title">
+        <item>Expense</item>
+        <item>Borrowing</item>
+    </string-array>
+    <string-array name="spn_spend_detail">
+        <item>When expense, income daily.</item>
+        <item>When borrowing or paying debts.</item>
+    </string-array>
+</resources>

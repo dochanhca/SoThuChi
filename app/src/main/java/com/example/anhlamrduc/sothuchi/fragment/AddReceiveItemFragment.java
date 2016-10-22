@@ -84,13 +84,12 @@ public class AddReceiveItemFragment extends BaseFragment {
 
             onPassDataFromAddReceiveItem.onReceiveItemInsertToDBFromAddReceive(receiveItem);
 
+            /* Save new ReceiveItem to editor to NotifyDataChanged*/
             Gson gson = new Gson();
             String receiveItemJson = gson.toJson(receiveItem);
             getEditor().putString(MainActivity.NEW_RECEIVE_ITEM, receiveItemJson);
             getEditor().commit();
 
-            edtReceiveItemName.setText("");
-            edtDescription.setText("");
             getFragmentManager().popBackStack();
         }
     }

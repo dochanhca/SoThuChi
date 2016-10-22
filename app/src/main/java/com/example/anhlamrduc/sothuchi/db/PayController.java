@@ -6,16 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.anhlamrduc.sothuchi.item.Account;
+import com.example.anhlamrduc.sothuchi.item.Borrower;
 import com.example.anhlamrduc.sothuchi.item.Event;
 import com.example.anhlamrduc.sothuchi.item.Lender;
 import com.example.anhlamrduc.sothuchi.item.Pay;
-import com.example.anhlamrduc.sothuchi.item.SpendingItem;
 import com.example.anhlamrduc.sothuchi.item.Receiver;
-import com.example.anhlamrduc.sothuchi.item.Borrower;
+import com.example.anhlamrduc.sothuchi.item.SpendingItem;
+import com.example.anhlamrduc.sothuchi.item.SumPayBySpendingItem;
 import com.example.anhlamrduc.sothuchi.utils.Constant;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -46,41 +48,47 @@ public class PayController extends SQLiteAssetHelper {
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
-            String sql = "SELECT MaChiTien, SoTien, Ngay, MoTa, TenTaiKhoan, TenMucChi, TenNguoiChoVay, TenNguoiVay, TenNguoiDuocChi, TenSuKien \n" +
-                    "FROM ChiTien ct, TaiKhoan tk, MucChi mc, NguoiChoVay ncv, NguoiVay nv, " +
-                    "NguoiDuocChi ndc, SuKien sk\n" +
-                    "WHERE ct.MaTaiKhoan = tk.MaTaiKhoan " +
-                    "AND ct.MaMucChi = mc.MaMucChi " +
-                    "AND  ct.MaNguoiChoVay = ncv.MaNguoiChoVay " +
-                    "AND  ct.MaNguoiVay = nv.MaNguoiVay " +
-                    "AND ct.MaNguoiDuocChi = ndc.MaNguoiDuocChi " +
-                    "AND ct.MaSuKien = sk.MaSuKien";
+            String sql = "SELECT MaChiTien, SoTien, Ngay, MoTa, TaiKhoan.MaTaiKhoan, TenTaiKhoan, MucChi.MaMucChi, " +
+                    "TenMucChi, MucCha, Ngay, NguoiDuocChi.MaNguoiDuocChi , TenNguoiDuocChi, SuKien.MaSuKien, TenSuKien \n" +
+                    "FROM ChiTien, TaiKhoan, MucChi, NguoiDuocChi, SuKien \n" +
+                    "WHERE ChiTien.MaTaiKhoan = TaiKhoan.MaTaiKhoan \n" +
+                    "AND ChiTien.MaMucChi = MucChi.MaMucChi \n" +
+                    "AND ChiTien.MaNguoiDuocChi = NguoiDuocChi.MaNguoiDuocChi \n" +
+                    "AND ChiTien.MaSuKien = SuKien.MaSuKien";
 
             Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {
                 do {
                     Account account = new Account();
+                    account.setAccountID(cs.getInt(cs.getColumnIndex("MaTaiKhoan")));
                     account.setAccountName(cs.getString(cs.getColumnIndex("TenTaiKhoan")));
 
                     SpendingItem spendingItem = new SpendingItem();
+                    spendingItem.setSpendingItemID(cs.getInt(cs.getColumnIndex("MaMucChi")));
                     spendingItem.setSpendingItemName(cs.getString(cs.getColumnIndex("TenMucChi")));
-
-                    Borrower borrower = new Borrower();
-                    borrower.setBorrowerName(cs.getString(cs.getColumnIndex("TenNguoiVay")));
+                    spendingItem.setParentItem(cs.getString(cs.getColumnIndex("MucCha")));
 
                     Lender lender = new Lender();
-                    lender.setLenderName(cs.getString(cs.getColumnIndex("TenNguoiChoVay")));
+                    Borrower borrower = new Borrower();
 
                     Receiver receiver = new Receiver();
+                    receiver.setReceiverID(cs.getInt(cs.getColumnIndex("MaNguoiDuocChi")));
                     receiver.setReceiverName(cs.getString(cs.getColumnIndex("TenNguoiDuocChi")));
 
                     Event event = new Event();
+                    event.setEventID(cs.getInt(cs.getColumnIndex("MaSuKien")));
                     event.setEventName(cs.getString(cs.getColumnIndex("TenSuKien")));
 
                     int payID = cs.getInt(cs.getColumnIndex(KEY_ID));
                     double amount = cs.getDouble(cs.getColumnIndex(KEY_MONEY));
                     String description = cs.getString(cs.getColumnIndex(KEY_NOTE));
-                    Date day = Constant.VN_DATE_FORMAT.parse(cs.getString(cs.getColumnIndex(KEY_DATE)));
+//                    String date = Constant.VN_DATE_FORMAT.format();
+                    Date day = Calendar.getInstance().getTime();
+                    try {
+                        day = Constant.GMT_DATE_FORMAT.parse(cs.getString(cs.getColumnIndex(KEY_DATE)));
+                    } catch (Exception e) {
+                        e.getMessage();
+                    }
                     Pay pay = new Pay(payID, amount, day, description, account, spendingItem,
                             lender, borrower, receiver, event);
                     listPay.add(pay);
@@ -140,4 +148,37 @@ public class PayController extends SQLiteAssetHelper {
         }
         return 0;
     }
+
+    public ArrayList<SumPayBySpendingItem> getSumBySpendingItem() {
+        ArrayList<SumPayBySpendingItem> listSumOfPay = new ArrayList<>();
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            String sql = "SELECT Sum(SoTien) AS Tong, Ngay, MucChi.MaMucChi as MaMucChi, MucChi.TenMucChi as TenMucChi \n" +
+                    "FROM ChiTien\n" +
+                    "JOIN MucChi\n" +
+                    "ON ChiTien.MaMucChi = MucChi.MaMucChi\n" +
+                    "GROUP BY MucChi.MaMucChi\n" +
+                    "HAVING MucChi.MaMucChi IN (SELECT MaMucChi FROM MucChi WHERE MucCha ='')\n";
+            Cursor cs = db.rawQuery(sql, null);
+            if (cs.moveToFirst()) {
+                do {
+
+                    SumPayBySpendingItem sumPayBySpendingItem = new SumPayBySpendingItem();
+                    sumPayBySpendingItem.setId(cs.getInt(cs.getColumnIndex("MaMucChi")));
+                    sumPayBySpendingItem.setName(cs.getString(cs.getColumnIndex("TenMucChi")));
+                    sumPayBySpendingItem.setSum(cs.getDouble(cs.getColumnIndex("Tong")));
+                    Date date = Constant.GMT_DATE_FORMAT.parse(cs.getString(cs.getColumnIndex(KEY_DATE)));
+                    sumPayBySpendingItem.setPayDate(date);
+                    listSumOfPay.add(sumPayBySpendingItem);
+                } while (cs.moveToNext());
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        } finally {
+            //close connect to database
+            close();
+        }
+        return listSumOfPay;
+    }
+
 }

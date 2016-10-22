@@ -11,7 +11,6 @@ import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.adapter.ListAccountAdapter;
 import com.example.anhlamrduc.sothuchi.item.Account;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -33,14 +32,10 @@ public class SelectAccountFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Account account = arrAccount.get(position);
-            Gson gson = new Gson();
-            String accountJson = gson.toJson(account);
             if (typeSelectAccount == NoteFragment.FROM_ACCOUNT)
-                getEditor().putString(MainActivity.FROM_ACCOUNT_SELECTED, accountJson);
+                setAccount(account, NoteFragment.FROM_ACCOUNT);
             else
-                getEditor().putString(MainActivity.TO_ACCOUNT_SELECTED, accountJson);
-            getEditor().commit();
-            getFragmentManager().popBackStack();
+                setAccount(account, NoteFragment.TO_ACCOUNT);
         }
     };
 
@@ -56,7 +51,7 @@ public class SelectAccountFragment extends BaseFragment {
         imgAdd.setVisibility(View.GONE);
         llSumMoney.setVisibility(View.GONE);
 
-        listAccountAdapter = new ListAccountAdapter(getActivity(), arrAccount);
+        listAccountAdapter = new ListAccountAdapter(getActivity(), arrAccount, true);
         lvAccount.setAdapter(listAccountAdapter);
         lvAccount.setOnItemClickListener(onItemClickListener);
     }

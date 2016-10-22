@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by AnhlaMrDuc on 02-May-16.
  */
-public class Transfer implements Parcelable {
+public class Transfer implements Parcelable, Comparable<Transfer> {
     private int transferID;
     private double amount;
     private Date transferDate;
@@ -120,5 +120,13 @@ public class Transfer implements Parcelable {
         dest.writeDouble(transferFee);
         dest.writeParcelable(fromAccount, flags);
         dest.writeParcelable(toAccount, flags);
+    }
+
+    @Override
+    public int compareTo(Transfer transfer) {
+        if (transfer.getTransferDate() == null || getTransferDate() == null)
+        return 0;
+        else
+            return transfer.getTransferDate().compareTo(getTransferDate());
     }
 }

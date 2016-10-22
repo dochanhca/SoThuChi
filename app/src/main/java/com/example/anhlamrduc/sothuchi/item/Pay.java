@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by AnhlaMrDuc on 21-Apr-16.
  */
-public class Pay implements Parcelable {
+public class Pay implements Parcelable, Comparable<Pay> {
     private int payID;
     private double money;
     private Date payDate;
@@ -142,16 +142,13 @@ public class Pay implements Parcelable {
         this.event = event;
     }
 
-
     @Override
-
     public int describeContents() {
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeInt(payID);
         dest.writeDouble(money);
         dest.writeString(description);
@@ -163,4 +160,11 @@ public class Pay implements Parcelable {
         dest.writeParcelable(event, flags);
     }
 
+    @Override
+    public int compareTo(Pay pay) {
+        if (getPayDate() == null || pay.getPayDate() == null) {
+            return 0;
+        }
+        return pay.getPayDate().compareTo(getPayDate());
+    }
 }

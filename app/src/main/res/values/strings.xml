@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sổ Thu Chi</string>
+    <string name="app_name">Quản Lý Chi Tiêu</string>
     <string name="updating">Đang cập nhật nội dung</string>
     <string name="tab1">Thu chi</string>
     <string name="tab2">Tài khoản</string>
@@ -64,5 +64,32 @@
     <string name="account_type">Loại tài khoản</string>
     <string name="first_amount">Số tiền ban đầu</string>
     <string name="account_name">Tên tài khoản</string>
+    <string name="product_info">Thông tin sản phẩm</string>
+    <string name="help">Trợ giúp</string>
+    <string name="facebook_link">Liên kết Facebook</string>
+    <string name="version">Phiên bản 1.0</string>
+    <string name="close">ĐÓNG</string>
+    <string name="account_name_cant_be_blank">Tên tài khoản không được để trống</string>
+    <string name="account_name_already_exists">Tài khoản đã tồn tài</string>
+    <string name="current_money">Số tiền hiện có</string>
+    <string name="update_success">Sửa thành công</string>
+    <string name="add_limit">Thêm hạn mức</string>
+    <string name="limit_name">Tên hạn mức</string>
+    <string name="write_limit">Ghi hạn mức</string>
+    <string name="repeat">Lặp lại</string>
+    <string name="start_date">Ngày bắt đầu</string>
+    <string name="put_to_next_period">Dồn sang kỳ sau</string>
+    <string name="surplus_or_deficit_amount_will_not_be_transferred_to_next_period">(Số tiền dư hoặc bội chi sẽ KHÔNG được chuyển sang kỳ sau)</string>
+    <string name="function_updating">Chức năng đang cập nhật</string>
+    <string name="pay">Chi tiền</string>
+    <string name="receive_money">Thu tiền</string>
+    <string name="total">Thống kê chi tiêu</string>
+    <string name="this_month">Tháng này</string>
+    <string name="this_year">Năm nay</string>
+    <string name="sum">Tổng</string>
+    <string name="received">Đã thu</string>
+    <string name="transfer_to">Chuyển đến</string>
+    <string name="delete">Xóa</string>
+    <string name="receive_item">Hạng mục thu</string>
 
 </resources>

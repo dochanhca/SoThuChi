@@ -5,19 +5,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.adapter.ListReceiveItemAdapter;
-import com.example.anhlamrduc.sothuchi.adapter.NoteSpinnerAdapter;
 import com.example.anhlamrduc.sothuchi.item.ReceiveItem;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -28,8 +25,8 @@ public class ListReceiveItemFragment extends BaseFragment {
 
     @Bind(android.R.id.list)
     ListView list;
-    @Bind(R.id.spn_receive_action)
-    Spinner spnReceiveAction;
+    @Bind(R.id.txt_spending_parent_title)
+    TextView title;
 
     private ArrayList<ReceiveItem> receiveItems;
     private ListReceiveItemAdapter listReceiveItemAdapter;
@@ -38,34 +35,11 @@ public class ListReceiveItemFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             ReceiveItem receiveItem = receiveItems.get(position);
-            Gson gson = new Gson();
-            String receiveItemJson = gson.toJson(receiveItem);
-            getEditor().putString(MainActivity.RECEIVE_ITEM_NAME_FROM_LIST_RECEIVE, receiveItemJson);
-            getEditor().commit();
+            setReceiveItem(receiveItem);
+
             getFragmentManager().popBackStack();
         }
     };
-
-    private void showAddReceiveItemFragment() {
-        AddReceiveItemFragment addReceiveItemFragment = new AddReceiveItemFragment();
-
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB, receiveItems);
-        addReceiveItemFragment.setArguments(args);
-
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fr_list_receive_item_container, addReceiveItemFragment,
-                ListReceiveItemContainerFragment.ADD_RECEIVE_ITEM_FRAG);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 
     @Override
     protected int layoutID() {
@@ -86,11 +60,7 @@ public class ListReceiveItemFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
-        spnReceiveAction.setAdapter(new NoteSpinnerAdapter(getContext(),
-                R.layout.spinner_dropdown_custom,
-                getResources().getStringArray(R.array.spn_spend_title)));
-
+        title.setText(R.string.receive_item);
         listReceiveItemAdapter = new ListReceiveItemAdapter(getActivity(), receiveItems);
         list.setAdapter(listReceiveItemAdapter);
         list.setOnItemClickListener(onItemClickListener);
@@ -107,4 +77,20 @@ public class ListReceiveItemFragment extends BaseFragment {
                 break;
         }
     }
+
+    private void showAddReceiveItemFragment() {
+        AddReceiveItemFragment addReceiveItemFragment = new AddReceiveItemFragment();
+
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB, receiveItems);
+        addReceiveItemFragment.setArguments(args);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fr_list_receive_item_container, addReceiveItemFragment,
+                ListReceiveItemContainerFragment.ADD_RECEIVE_ITEM_FRAG);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 }

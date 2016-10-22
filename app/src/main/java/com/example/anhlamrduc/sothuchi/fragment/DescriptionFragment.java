@@ -3,7 +3,6 @@ package com.example.anhlamrduc.sothuchi.fragment;
 import android.widget.EditText;
 
 import com.example.anhlamrduc.sothuchi.R;
-import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -36,8 +35,7 @@ public class DescriptionFragment extends BaseFragment {
     @OnClick(R.id.txt_done)
     public void sendDesciptionToNote() {
         String desciption = edtDescription.getText().toString();
-        getEditor().putString(MainActivity.DESCRIPTION_SPENDING, desciption);
-        getEditor().commit();
+        setDescription(desciption);
         getFragmentManager().popBackStack();
     }
 

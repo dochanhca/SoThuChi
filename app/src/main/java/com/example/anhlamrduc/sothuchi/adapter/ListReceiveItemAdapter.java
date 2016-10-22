@@ -29,9 +29,16 @@ public class ListReceiveItemAdapter extends ArrayAdapter<ReceiveItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ReceiveItem receiveItem = getItem(position);
+        ViewHolder viewHolder = null;
 
-        convertView = inflater.inflate(R.layout.item_receive, parent, false);
-        ViewHolder viewHolder = new ViewHolder(convertView);
+        if (convertView == null) {
+
+            convertView = inflater.inflate(R.layout.item_receive, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else
+            viewHolder = (ViewHolder) convertView.getTag();
+
         viewHolder.txtReceiveItemName.setText(receiveItem.getReceiveItemName());
 
         return convertView;

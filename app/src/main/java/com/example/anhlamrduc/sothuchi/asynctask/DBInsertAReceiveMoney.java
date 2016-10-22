@@ -3,13 +3,13 @@ package com.example.anhlamrduc.sothuchi.asynctask;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.example.anhlamrduc.sothuchi.db.ReceiveMoneyController;
-import com.example.anhlamrduc.sothuchi.item.ReceiveMoney;
+import com.example.anhlamrduc.sothuchi.db.IncomeController;
+import com.example.anhlamrduc.sothuchi.item.Income;
 
 /**
  * Created by AnhlaMrDuc on 02-May-16.
  */
-public class DBInsertAReceiveMoney extends AsyncTask<ReceiveMoney, Object, Long> {
+public class DBInsertAReceiveMoney extends AsyncTask<Income, Object, Long> {
     private Context context;
 
     public DBInsertAReceiveMoney(Context context) {
@@ -17,8 +17,8 @@ public class DBInsertAReceiveMoney extends AsyncTask<ReceiveMoney, Object, Long>
     }
 
     @Override
-    protected Long doInBackground(ReceiveMoney... params) {
-        ReceiveMoneyController db = new ReceiveMoneyController(context);
-        return db.addReceiveMoney(params[0]);
+    protected Long doInBackground(Income... params) {
+        IncomeController db = new IncomeController(context);
+        return db.addIncome(params[0]);
     }
 }

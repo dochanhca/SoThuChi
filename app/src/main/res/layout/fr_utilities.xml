@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/header_blue"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/text_header"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/utilities" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_info_product"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/bg_list_item"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:src="@drawable/ic_infomation_new"/>
+        <TextView
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:text="@string/product_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@android:color/darker_gray"></View>
+
+    <LinearLayout
+        android:id="@+id/ll_help"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/bg_list_item"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:src="@drawable/ic_help_new"/>
+        <TextView
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:text="@string/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@android:color/darker_gray"></View>
+
+    <LinearLayout
+        android:id="@+id/ll_about_us"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_list_item"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:src="@drawable/ic_contact"/>
+        <TextView
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:layout_marginLeft="@dimen/margin_large"
+            android:text="@string/facebook_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@android:color/darker_gray"></View>
+
+</LinearLayout>

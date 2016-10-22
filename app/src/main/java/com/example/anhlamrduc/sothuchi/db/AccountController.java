@@ -23,6 +23,8 @@ public class AccountController extends SQLiteAssetHelper {
     private static final String KEY_NOTE = "GhiChu";
     private static final String KEY_TYPE_ACCOUNT_ID = "MaLoai";
     private static final String KEY_HINH_ANH = "HinhAnh";
+    private static final String KEY_TENLOAI = "TenLoai";
+
     private static final String DB_TABLE = "TaiKhoan";
     private static final String DB_TABLE_LOAITK = "LoaiTaiKhoan";
 
@@ -40,15 +42,19 @@ public class AccountController extends SQLiteAssetHelper {
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
-            String sql = "SELECT " + KEY_ID + ", " + KEY_NAME + ", " + KEY_FIST_MONEY + ", "
-                    + KEY_CURRENT_MONEY + ", " + KEY_NOTE + ", " + KEY_TYPE_ACCOUNT_ID
-                    + " FROM " + DB_TABLE;
+            String sql = "SELECT MaTaiKhoan, TenTaiKhoan, SoTienBanDau, SoTienHienCo, GhiChu, " +
+                    "TaiKhoan.MaLoai, TenLoai, HinhAnh\n" +
+                    "FROM TaiKhoan, LoaiTaiKhoan\n" +
+                    "WHERE TaiKhoan.MaLoai = LoaiTaiKhoan.MaLoai";
 
             Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {
                 do {
                     AccountType accountType = new AccountType();
                     accountType.setTypeID(cs.getInt(cs.getColumnIndex(KEY_TYPE_ACCOUNT_ID)));
+                    accountType.setTypeName(cs.getString(cs.getColumnIndex(KEY_TENLOAI)));
+                    accountType.setImage(cs.getString(cs.getColumnIndex(KEY_HINH_ANH)));
+
                     int accountID = cs.getInt(cs.getColumnIndex(KEY_ID));
                     String accountName = cs.getString(cs.getColumnIndex(KEY_NAME));
                     double firstMoney = cs.getDouble(cs.getColumnIndex(KEY_FIST_MONEY));

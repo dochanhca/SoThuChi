@@ -3,20 +3,14 @@ package com.example.anhlamrduc.sothuchi.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.adapter.ExpandableListSpendingAdapter;
-import com.example.anhlamrduc.sothuchi.adapter.NoteSpinnerAdapter;
 import com.example.anhlamrduc.sothuchi.item.SpendingItem;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,12 +37,7 @@ public class ListSpendItemFragment extends BaseFragment {
     private ExpandableListView.OnGroupClickListener onGroupClickListener = new ExpandableListView.OnGroupClickListener() {
         @Override
         public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//            onPassDataFromListSpendItem.onDataReceivedFromListSpendItem(listSpendingParent.get(groupPosition));
-//            SharedPreferences mpPreferences = getPreferen
-            Gson gson = new Gson();
-            String spendingItemJson = gson.toJson(listSpendingParent.get(groupPosition));
-            getEditor().putString(MainActivity.SPENDING_ITEM_FROM_LIST_SPENDING, spendingItemJson);
-            getEditor().commit();
+            setSpendingItem(listSpendingParent.get(groupPosition));
             if (getFragmentManager().getBackStackEntryCount() > 0) {
                 getFragmentManager().popBackStack();
             }
@@ -62,12 +51,8 @@ public class ListSpendItemFragment extends BaseFragment {
         public boolean onChildClick(ExpandableListView parent, View v,
                                     int groupPosition, int childPosition, long id) {
             // TODO Auto-generated method stub
-            Gson gson = new Gson();
-            SpendingItem spending = listSpendingChild.
-                    get(listSpendingParent.get(groupPosition).getSpendingItemName()).get(childPosition);
-            String spendingItemJson = gson.toJson(spending);
-            getEditor().putString(MainActivity.SPENDING_ITEM_FROM_LIST_SPENDING, spendingItemJson);
-            getEditor().commit();
+            setSpendingItem(listSpendingChild.get(listSpendingParent.get(groupPosition).getSpendingItemName())
+                    .get(childPosition));
             if (getFragmentManager().getBackStackEntryCount() > 0) {
                 getFragmentManager().popBackStack();
             }
@@ -75,22 +60,6 @@ public class ListSpendItemFragment extends BaseFragment {
 //                    get(listSpendingParent.get(groupPosition).getSpendingItemName()).get(childPosition);
 //            onPassDataFromListSpendItem.onDataReceivedFromListSpendItem(spending);
             return true;
-        }
-    };
-
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
         }
     };
 
@@ -102,11 +71,6 @@ public class ListSpendItemFragment extends BaseFragment {
     @Override
     protected void initView() {
         initiateListview();
-        spnSpendAction.setAdapter(new NoteSpinnerAdapter(getContext(),
-                R.layout.spinner_dropdown_custom,
-                getResources().getStringArray(R.array.spn_spend_title)));
-
-        edtSearch.addTextChangedListener(textWatcher);
 //        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 //        searchView.setIconifiedByDefault(false);
 //        searchView.setOnQueryTextListener(this);
@@ -207,11 +171,7 @@ public class ListSpendItemFragment extends BaseFragment {
     ImageView imgAdd;
     @Bind(R.id.img_back)
     ImageView imgBack;
-    @Bind(R.id.spn_spend_action)
-    Spinner spnSpendAction;
     @Bind(R.id.lv_spending)
     ExpandableListView lvSpending;
-    @Bind(R.id.edt_search)
-    EditText edtSearch;
 
 }

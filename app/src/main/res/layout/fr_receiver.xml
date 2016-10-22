@@ -43,6 +43,7 @@
     <EditText
         android:id="@+id/edt_receiver"
         style="@style/edt_single_line"
+        android:imeOptions="actionDone"
         android:hint="@string/select_or_input_receiver"
         >
         <requestFocus />

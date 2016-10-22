@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/margin_10dp"
         />
     <TextView
-        android:id="@+id/txt_from_account_name"
+        android:id="@+id/txt_account_name"
         android:layout_toRightOf="@+id/img_icon"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="@dimen/margin_10dp"
@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/txt_account_money"
         android:layout_toRightOf="@+id/img_icon"
-        android:layout_below="@id/txt_from_account_name"
+        android:layout_below="@id/txt_account_name"
         android:layout_marginLeft="@dimen/margin_10dp"
         android:text="Còn: "
         android:textColor="@android:color/darker_gray"

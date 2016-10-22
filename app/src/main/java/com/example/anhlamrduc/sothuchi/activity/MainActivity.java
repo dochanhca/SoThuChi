@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,26 +15,28 @@ import android.widget.Toast;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.adapter.MyPagerAdapter;
+import com.example.anhlamrduc.sothuchi.asynctask.DBInsertAAccount;
 import com.example.anhlamrduc.sothuchi.asynctask.DBInsertAReceiveItem;
 import com.example.anhlamrduc.sothuchi.asynctask.DBInsertAReceiveMoney;
 import com.example.anhlamrduc.sothuchi.asynctask.DBInsertASpendingItem;
 import com.example.anhlamrduc.sothuchi.asynctask.DBInsertATransfer;
 import com.example.anhlamrduc.sothuchi.asynctask.DBInsertPay;
+import com.example.anhlamrduc.sothuchi.asynctask.DBUpdateAccount;
 import com.example.anhlamrduc.sothuchi.asynctask.DBUpdateAccountAmount;
-import com.example.anhlamrduc.sothuchi.db.AccountController;
-import com.example.anhlamrduc.sothuchi.db.ReceiverController;
 import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
+import com.example.anhlamrduc.sothuchi.fragment.AddAccountFragment;
 import com.example.anhlamrduc.sothuchi.fragment.AddReceiveItemFragment;
 import com.example.anhlamrduc.sothuchi.fragment.AddSpendItemFragment;
 import com.example.anhlamrduc.sothuchi.fragment.LimitFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
-import com.example.anhlamrduc.sothuchi.fragment.ReportFragment;
+import com.example.anhlamrduc.sothuchi.fragment.ReportContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.UtilitiesFragment;
 import com.example.anhlamrduc.sothuchi.item.Account;
+import com.example.anhlamrduc.sothuchi.item.Event;
+import com.example.anhlamrduc.sothuchi.item.Income;
 import com.example.anhlamrduc.sothuchi.item.Pay;
 import com.example.anhlamrduc.sothuchi.item.ReceiveItem;
-import com.example.anhlamrduc.sothuchi.item.ReceiveMoney;
 import com.example.anhlamrduc.sothuchi.item.Receiver;
 import com.example.anhlamrduc.sothuchi.item.SpendingItem;
 import com.example.anhlamrduc.sothuchi.item.Transfer;
@@ -48,11 +49,11 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NoteFragment.OnPassDataFromNote,
         AddSpendItemFragment.OnPassDataFromAddSpendItem,
-        AddReceiveItemFragment.OnPassDataFromAddReceiveItem {
+        AddReceiveItemFragment.OnPassDataFromAddReceiveItem,
+        AddAccountFragment.OnPassDataFromAddAccount {
 
     public static final String TAG = "Main activity: ";
     public static final String LIST_ACCOUNT_FROM_DB = "list of account";
-    public static final String TOTAL_MONEY_FROM_MAIN = "total money";
     public static final String MONEY_FROM_NOTE = "money";
     public static final String LIST_SPENDING_FROM_DB = "list of spending";
     public static final String SPENDING_ITEM_FROM_LIST_SPENDING = "spending received";
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     public static final String LENDER = "lender";
     public static final String LIST_RECEIVER_FROM_MAIN = "list of receiver";
     public static final String TRIP_OR_EVENT = "trip or event";
-    public static final String PAY_DATE = "pay date";
+    public static final String TRANSACTION_DATE = "pay date";
     public static final String DEFAULT_ACCOUNT = "default account";
     public static final String TO_ACCOUNT_SELECTED = "To account name";
     public static final String TRANSFER_FEE_FROM_NOTE = "Transfer fee";
@@ -71,20 +72,32 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     public static final String SPENDING_ITEM_PARENT_NAME = "Spending Item Parent";
     public static final String NEW_SPENDING_ITEM = "New spending item";
     public static final String NEW_RECEIVE_ITEM = "New receive item";
+    public static final String FIRST_MONEY_FROM_ADD_ACCOUNT = "Frist money from add count";
+    public static final String NEW_ACCOUNT = "New account";
+    public static final String LIST_RECEIVER_FROM_DB = "List receiver from db";
+    public static final String LIST_EVENT_FROM_DB = "List event form db";
+    public static final String NEW_EVENT = "New event";
+    public static final String NEW_RECEIVER = "New receiver";
+    public static final String LIST_PAY_FROM_DB = "List pay from db";
+    public static final String LIST_RECEIVE_MONEY_FROM_DB = "List receive money from db";
+    public static final String NEW_PAY = "New pay";
+    public static final String NEW_RECEIVE_MONEY = "New Receive money";
 
-    private AccountController db_account;
-    private ReceiverController db_receiver;
     private MyPagerAdapter myPagerAdapter;
 
     private Bundle bundle_to_note;
     private Bundle bundle_to_account;
     private Bundle bundle_to_limit;
     private Bundle bundle_to_report;
-    private Bundle bundle_to_utility;
 
-    ArrayList<SpendingItem> listSpendingItem = new ArrayList<>();
-    ArrayList<ReceiveItem> listReceiveItem = new ArrayList<>();
-    ArrayList<Account> listAccount = new ArrayList<>();
+    private ArrayList<SpendingItem> listSpendingItem = new ArrayList<>();
+    private ArrayList<ReceiveItem> listReceiveItem = new ArrayList<>();
+    private ArrayList<Account> listAccount = new ArrayList<>();
+    private ArrayList<Event> listEvent = new ArrayList<>();
+    private ArrayList<Receiver> listReceiver = new ArrayList<>();
+    private ArrayList<Pay> listPay = new ArrayList<>();
+    private ArrayList<Income> listIncome = new ArrayList<>();
+
     private ProgressDialog dialog;
     private boolean douubleBackPressed = false;
 
@@ -104,14 +117,17 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         startService(new Intent(this, MyService.class));
         dialog = new ProgressDialog(this);
 
-        db_account = new AccountController(this);
-        db_receiver = new ReceiverController(this);
         listReceiveItem = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB);
         listSpendingItem = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB);
         listAccount = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_DB);
+        listReceiver = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_DB);
+        listEvent = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_EVENT_FROM_DB);
+//        listPay = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_PAY_FROM_DB);
+//        listIncome = getIntent().getExtras().getParcelableArrayList(MainActivity.LIST_RECEIVE_MONEY_FROM_DB);
         //Send data to Fragment via bundle
         putBundleToNote();
         putBundleToAcount();
+        putBundleToReport();
 
         fragmentManager = getSupportFragmentManager();
 
@@ -156,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
     protected void onDestroy() {
         super.onDestroy();
         Log.e(TAG, "onDestroy");
-        db_account.close();
     }
 
     /**
@@ -166,10 +181,10 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
      */
     @Override
     public void onPayInsertToDBFromNote(Pay pay) {
+        myPagerAdapter.onPayInsertToDBFromNote(pay);
         Log.e(TAG, "Pay received");
         double money = pay.getAccount().getCurrentMoney() - pay.getMoney();
         pay.getAccount().setCurrentMoney(money);
-//        final ProgressDialog dialog = new ProgressDialog(this);
         /* Insert a new pay */
         DBInsertPay dbInsertPay = new DBInsertPay(this) {
             @Override
@@ -190,18 +205,19 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
             }
         };
         dbUpdateAccountAmount.execute(pay.getAccount());
-        myPagerAdapter.onPayInsertToDBFromNote(pay);
+
     }
 
     /**
-     * Receive a ReceiveMoney from NoteFragment and insert to db with asynctask
+     * Receive a Income from NoteFragment and insert to db with asynctask
      *
-     * @param receiveMoney
+     * @param income
      */
     @Override
-    public void onReceiveMoneyInsertToDBFromNote(ReceiveMoney receiveMoney) {
-        double money = receiveMoney.getAccount().getCurrentMoney() + receiveMoney.getAmount();
-        receiveMoney.getAccount().setCurrentMoney(money);
+    public void onReceiveMoneyInsertToDBFromNote(Income income) {
+        myPagerAdapter.onReceiveMoneyInsertToDBFromNote(income);
+        double money = income.getAccount().getCurrentMoney() + income.getAmount();
+        income.getAccount().setCurrentMoney(money);
 //        final ProgressDialog dialog = new ProgressDialog(this);
         /* Insert New Receive Money*/
         DBInsertAReceiveMoney dbInsertAReceiveMoney = new DBInsertAReceiveMoney(this) {
@@ -210,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
                 dialog.show();
             }
         };
-        dbInsertAReceiveMoney.execute(receiveMoney);
+        dbInsertAReceiveMoney.execute(income);
         /* Update amount of account */
         DBUpdateAccountAmount dbUpdateAccountAmount = new DBUpdateAccountAmount(this) {
             @Override
@@ -222,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
                 Toast.makeText(MainActivity.this, getString(R.string.write_success), Toast.LENGTH_SHORT).show();
             }
         };
-        dbUpdateAccountAmount.execute(receiveMoney.getAccount());
-        myPagerAdapter.onReceiveMoneyInsertToDBFromNote(receiveMoney);
+        dbUpdateAccountAmount.execute(income.getAccount());
+
     }
 
     /**
@@ -308,17 +324,55 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
 
     }
 
+    @Override
+    public void onAccountInsertToDBFromAddAccount(Account account) {
+        /* Insert new Account */
+        DBInsertAAccount dbInsertAAccount = new DBInsertAAccount(this) {
+            @Override
+            protected void onPreExecute() {
+                dialog.show();
+            }
+
+            @Override
+            protected void onPostExecute(Long aLong) {
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this, getString(R.string.insert_success), Toast.LENGTH_SHORT).show();
+            }
+        };
+        dbInsertAAccount.execute(account);
+    }
+
+    @Override
+    public void onAccountUpdateToDBFromAddAccount(Account account) {
+         /* Update Account */
+        DBUpdateAccount dbUpdateAccount = new DBUpdateAccount(this) {
+            @Override
+            protected void onPreExecute() {
+                dialog.show();
+            }
+
+            @Override
+            protected void onPostExecute(Long aLong) {
+                dialog.dismiss();
+                Toast.makeText(MainActivity.this, getString(R.string.update_success), Toast.LENGTH_SHORT).show();
+            }
+        };
+        dbUpdateAccount.execute(account);
+    }
+
     public static void startActivity(Activity activity, ArrayList<ReceiveItem> listReceiveItem,
-                                     ArrayList<SpendingItem> listSpendingItem, ArrayList<Account> listAccount) {
+                                     ArrayList<SpendingItem> listSpendingItem, ArrayList<Account> listAccount,
+                                     ArrayList<Receiver> listReceiver, ArrayList<Event> listEvent) {
         Intent intent = new Intent(activity, MainActivity.class);
         Bundle args = new Bundle();
         args.putParcelableArrayList(MainActivity.LIST_SPENDING_FROM_DB, listSpendingItem);
         args.putParcelableArrayList(MainActivity.LIST_RECEIVE_ITEM_FROM_DB, listReceiveItem);
         args.putParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_DB, listAccount);
+        args.putParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_DB, listReceiver);
+        args.putParcelableArrayList(MainActivity.LIST_EVENT_FROM_DB, listEvent);
         intent.putExtras(args);
 
         activity.startActivity(intent);
-
     }
 
     /**
@@ -328,15 +382,23 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         //
         bundle_to_account = new Bundle();
         bundle_to_account.putParcelableArrayList(LIST_ACCOUNT_FROM_DB, listAccount);
-        bundle_to_account.putDouble(TOTAL_MONEY_FROM_MAIN, getSumMoney());
     }
 
     private void putBundleToNote() {
         bundle_to_note = new Bundle();
         bundle_to_note.putParcelableArrayList(LIST_SPENDING_FROM_DB, listSpendingItem);
-        bundle_to_note.putParcelableArrayList(LIST_RECEIVER_FROM_MAIN, getListReceiver());
+        bundle_to_note.putParcelableArrayList(LIST_RECEIVER_FROM_DB, listReceiver);
         bundle_to_note.putParcelableArrayList(LIST_RECEIVE_ITEM_FROM_DB, listReceiveItem);
+        bundle_to_note.putParcelableArrayList(LIST_EVENT_FROM_DB, listEvent);
         bundle_to_note.putParcelable(DEFAULT_ACCOUNT, listAccount.get(0));
+    }
+
+    private void putBundleToReport() {
+        bundle_to_report = new Bundle();
+        bundle_to_report.putParcelableArrayList(LIST_SPENDING_FROM_DB, listSpendingItem);
+        bundle_to_report.putParcelableArrayList(LIST_RECEIVER_FROM_DB, listReceiver);
+        bundle_to_report.putParcelableArrayList(LIST_RECEIVE_ITEM_FROM_DB, listReceiveItem);
+        bundle_to_report.putParcelableArrayList(LIST_EVENT_FROM_DB, listEvent);
     }
 
     /**
@@ -349,9 +411,10 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         myPagerAdapter.addFrag(new NoteContainerFragment(), "Ghi chép", bundle_to_note);
         myPagerAdapter.addFrag(new AccountContainerFragment(), "Tài khoản", bundle_to_account);
         myPagerAdapter.addFrag(new LimitFragment(), "Hạn mức chi", bundle_to_limit);
-        myPagerAdapter.addFrag(new ReportFragment(), "Báo cáo", bundle_to_report);
-        myPagerAdapter.addFrag(new UtilitiesFragment(), "Tiện ích", bundle_to_utility);
+        myPagerAdapter.addFrag(new ReportContainerFragment(), "Báo cáo", bundle_to_report);
+        myPagerAdapter.addFrag(new UtilitiesFragment(), "Tiện ích", null);
         viewPager.setAdapter(myPagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
     }
 
     /**
@@ -379,21 +442,10 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
         fragmentManager.popBackStack();
     }
 
-    private ArrayList<? extends Parcelable> getListReceiver() {
-        ArrayList arr = db_receiver.getListReceiver();
-        return arr;
-    }
-
-    public Receiver getAReceiver(int id) {
-        Receiver receiver = db_receiver.getReceiverByID(id);
-        return receiver;
-    }
-
-
-    private double getSumMoney() {
-        db_account = new AccountController(this);
-        return db_account.getSumMoney();
-    }
+//    public Receiver getAReceiver(int id) {
+//        Receiver receiver = db_receiver.getReceiverByID(id);
+//        return receiver;
+//    }
 
     public ArrayList<Account> getListAccount() {
         return listAccount;
@@ -401,17 +453,17 @@ public class MainActivity extends AppCompatActivity implements NoteFragment.OnPa
 
     @Override
     public void onBackPressed() {
-            if (douubleBackPressed || getSupportFragmentManager().getBackStackEntryCount()> 0) {
-                super.onBackPressed();
-                return;
+        if (douubleBackPressed || getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+            return;
+        }
+        this.douubleBackPressed = true;
+        Toast.makeText(this, getString(R.string.double_press_to_exit_app), Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                douubleBackPressed = false;
             }
-            this.douubleBackPressed = true;
-            Toast.makeText(this, getString(R.string.double_press_to_exit_app), Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    douubleBackPressed = false;
-                }
-            }, 2000);
+        }, 2000);
     }
 }

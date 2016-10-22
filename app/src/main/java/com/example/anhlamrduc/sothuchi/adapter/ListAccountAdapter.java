@@ -25,18 +25,26 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
 
     LayoutInflater layoutInflater;
     private AccountController db;
+    private boolean selectMode;
 
-    public ListAccountAdapter(Context context, ArrayList<Account> list) {
+    private OnAccountChildItemClickListener onAccountChildItemClickListener;
+
+    public interface OnAccountChildItemClickListener {
+        public void onEditClick(int position);
+    }
+
+    public ListAccountAdapter(Context context, ArrayList<Account> list, boolean selectMode) {
         super(context, -1, list);
+        this.selectMode = selectMode;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Account account = getItem(position);
         ViewHolder viewHolder;
 
-        String imgName = getImageName(account.getAccountType().getTypeID());
+        String imgName = account.getAccountType().getImage();
 
         convertView = layoutInflater.inflate(R.layout.item_account, parent, false);
         viewHolder = new ViewHolder(convertView);
@@ -45,6 +53,16 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
         viewHolder.txtAccountName.setText(account.getAccountName());
         String currently_money = Currency.getCurrency(account.getCurrentMoney());
         viewHolder.txtMoney.setText("Còn: " + currently_money + " đ");
+        if (selectMode) {
+            viewHolder.imgEdit.setVisibility(View.GONE);
+        } else {
+            viewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAccountChildItemClickListener.onEditClick(position);
+                }
+            });
+        }
         int imgID = getContext().getResources().getIdentifier(imgName, "drawable", getContext().getPackageName());
         viewHolder.imgIcon.setImageResource(imgID);
         return convertView;
@@ -56,7 +74,7 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
         ImageView imgIcon;
         @Bind(R.id.img_edit)
         ImageView imgEdit;
-        @Bind(R.id.txt_from_account_name)
+        @Bind(R.id.txt_account_name)
         TextView txtAccountName;
         @Bind(R.id.txt_account_money)
         TextView txtMoney;
@@ -66,16 +84,20 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
         }
     }
 
-    /**
-     * Get ImageName From DB
-     *
-     * @param typeAccountID
-     * @return
-     */
-    private String getImageName(int typeAccountID) {
+//    /**
+//     * Get ImageName From DB
+//     *
+//     * @param typeAccountID
+//     * @return
+//     */
+//    private String getImageName(int typeAccountID) {
+//
+//        db = new AccountController(getContext());
+//        return db.getImageName(typeAccountID);
+//    }
 
-        db = new AccountController(getContext());
-        return db.getImageName(typeAccountID);
+    public void setOnAccountChildItemClickListener(OnAccountChildItemClickListener onAccountChildItemClickListener) {
+        this.onAccountChildItemClickListener = onAccountChildItemClickListener;
     }
 
 }

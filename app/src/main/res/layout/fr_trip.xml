@@ -41,11 +41,17 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edt_trip"
+        android:id="@+id/edt_event"
         style="@style/edt_single_line"
+        android:imeOptions="actionDone"
         android:hint="@string/select_or_input_trip"
         >
         <requestFocus />
     </EditText>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"></ListView>
 
 </LinearLayout>

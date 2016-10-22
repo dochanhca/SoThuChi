@@ -26,6 +26,10 @@ public class Receiver implements Parcelable {
     public Receiver() {
     }
 
+    public Receiver(int receiverID) {
+        this.receiverID = receiverID;
+    }
+
     public Receiver(int receiverID, String receiverName) {
         this.receiverID = receiverID;
         this.receiverName = receiverName;

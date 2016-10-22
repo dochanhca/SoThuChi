@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.fragment.AccountContainerFragment;
 import com.example.anhlamrduc.sothuchi.fragment.NoteFragment;
+import com.example.anhlamrduc.sothuchi.fragment.ReportContainerFragment;
+import com.example.anhlamrduc.sothuchi.item.Income;
 import com.example.anhlamrduc.sothuchi.item.Pay;
-import com.example.anhlamrduc.sothuchi.item.ReceiveMoney;
 import com.example.anhlamrduc.sothuchi.item.Transfer;
 
 import java.util.ArrayList;
@@ -62,18 +63,22 @@ public class MyPagerAdapter extends FragmentPagerAdapter implements NoteFragment
     @Override
     public void onPayInsertToDBFromNote(Pay pay) {
         AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
-        if (accountContainerFragment != null) {
+        ReportContainerFragment reportContainerFragment = (ReportContainerFragment) mFragmentList.get(3);
+        if (accountContainerFragment != null  && reportContainerFragment != null) {
             accountContainerFragment.onPayInsertToDBFromNote(pay);
+            reportContainerFragment.onPayInsertToDBFromNote(pay);
         } else {
             Log.e(MainActivity.TAG, "Account Fragment is null");
         }
     }
 
     @Override
-    public void onReceiveMoneyInsertToDBFromNote(ReceiveMoney receiveMoney) {
+    public void onReceiveMoneyInsertToDBFromNote(Income income) {
         AccountContainerFragment accountContainerFragment = (AccountContainerFragment) mFragmentList.get(1);
-        if (accountContainerFragment != null) {
-            accountContainerFragment.onReceiveMoneyInsertToDBFromNote(receiveMoney);
+        ReportContainerFragment reportContainerFragment = (ReportContainerFragment) mFragmentList.get(3);
+        if (accountContainerFragment != null && reportContainerFragment != null) {
+            accountContainerFragment.onReceiveMoneyInsertToDBFromNote(income);
+            reportContainerFragment.onReceiveMoneyInsertToDBFromNote(income);
         } else {
             Log.e(MainActivity.TAG, "Account Fragment is null");
         }

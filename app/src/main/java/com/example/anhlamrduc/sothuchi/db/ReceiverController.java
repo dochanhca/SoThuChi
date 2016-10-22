@@ -77,17 +77,20 @@ public class ReceiverController extends SQLiteAssetHelper {
     }
 
     public Receiver getReceiverByName(String name) {
-        Receiver receiver = new Receiver();
         try {
             //open connect to database
             SQLiteDatabase db = getReadableDatabase();
-            Cursor cs = db.query(true, DB_TABLE, new String[] {KEY_ID, KEY_NAME},
-                    KEY_NAME+ "=" +name, null, null, null, null, null);
+
+            String sql = "SELECT * FROM " + DB_TABLE +
+                    " WHERE " + KEY_NAME + " LIKE '" + name.trim() + "' OR " + KEY_NAME + "='" + KEY_NAME + "'";
+
+            Cursor cs = db.rawQuery(sql, null);
             if (cs.moveToFirst()) {
                 int maNguoiDuocChi = cs.getInt(cs.getColumnIndex(KEY_ID));
                 String tenNguoiDuocChi = cs.getString(cs.getColumnIndex(KEY_NAME));
 
-                receiver = new Receiver(maNguoiDuocChi, tenNguoiDuocChi);
+                Receiver receiver = new Receiver(maNguoiDuocChi, tenNguoiDuocChi);
+                return receiver;
             }
         } catch (Exception e) {
             e.getMessage();
@@ -95,7 +98,7 @@ public class ReceiverController extends SQLiteAssetHelper {
             //close connect to database
             close();
         }
-        return receiver;
+        return null;
     }
 
     public long addReceiver(Receiver receiver) {

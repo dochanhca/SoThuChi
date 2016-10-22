@@ -9,7 +9,7 @@ import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
 import com.example.anhlamrduc.sothuchi.item.Account;
 import com.example.anhlamrduc.sothuchi.item.Pay;
-import com.example.anhlamrduc.sothuchi.item.ReceiveMoney;
+import com.example.anhlamrduc.sothuchi.item.Income;
 import com.example.anhlamrduc.sothuchi.item.Transfer;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class AccountContainerFragment extends BaseFragment implements NoteFragme
     private double totalMoney;
 
     public static final String ADD_ACCOUNT_FRAG = "AddAccountFragment";
-    public static final String ACCOUNT_FRAG = "AccountFragment";
+    public static final String ACCOUNT_FRAG = "AccountFragmentTag";
 
     @Override
     public void onAttach(Activity activity) {
@@ -40,11 +40,9 @@ public class AccountContainerFragment extends BaseFragment implements NoteFragme
     @Override
     protected void handleData() {
         arrAccount = getArguments().getParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_DB);
-        totalMoney = getArguments().getDouble(MainActivity.TOTAL_MONEY_FROM_MAIN);
         //replace fragment_container = fragment account
         Bundle args = new Bundle();
         args.putParcelableArrayList(MainActivity.LIST_ACCOUNT_FROM_DB, arrAccount);
-        args.putDouble(MainActivity.TOTAL_MONEY_FROM_MAIN, totalMoney);
         AccountFragment accountFragment = new AccountFragment();
         accountFragment.setArguments(args);
         //
@@ -67,10 +65,10 @@ public class AccountContainerFragment extends BaseFragment implements NoteFragme
     }
 
     @Override
-    public void onReceiveMoneyInsertToDBFromNote(ReceiveMoney receiveMoney) {
+    public void onReceiveMoneyInsertToDBFromNote(Income income) {
         AccountFragment fragment = (AccountFragment) getFragmentManager().findFragmentByTag(ACCOUNT_FRAG);
         if (fragment != null) {
-            fragment.onReceiveMoneyInsertToDBFromNote(receiveMoney);
+            fragment.onReceiveMoneyInsertToDBFromNote(income);
         }
     }
 

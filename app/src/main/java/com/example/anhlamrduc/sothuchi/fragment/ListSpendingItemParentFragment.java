@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.anhlamrduc.sothuchi.R;
@@ -22,8 +21,6 @@ import butterknife.OnClick;
  */
 public class ListSpendingItemParentFragment extends BaseFragment {
 
-    @Bind(R.id.spn_receive_action)
-    Spinner spnReceiveAction;
     @Bind(android.R.id.list)
     ListView list;
     @Bind(R.id.txt_spending_parent_title)
@@ -70,9 +67,8 @@ public class ListSpendingItemParentFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        spnReceiveAction.setVisibility(View.GONE);
-        imgAdd.setVisibility(View.GONE);
         txtTitle.setVisibility(View.VISIBLE);
+        imgAdd.setVisibility(View.GONE);
         adapter = new ListSpendingItemParentAdapter(getContext(), listSpendingParent);
         list.setAdapter(adapter);
         list.setOnItemClickListener(onItemClickListener);

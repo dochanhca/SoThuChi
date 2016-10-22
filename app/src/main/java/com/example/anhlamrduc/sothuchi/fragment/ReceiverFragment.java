@@ -8,10 +8,11 @@ import android.widget.ListView;
 
 import com.example.anhlamrduc.sothuchi.R;
 import com.example.anhlamrduc.sothuchi.activity.MainActivity;
-import com.example.anhlamrduc.sothuchi.adapter.ListReceiverApdater;
+import com.example.anhlamrduc.sothuchi.adapter.ListReceiverAdapter;
 import com.example.anhlamrduc.sothuchi.item.Receiver;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -20,14 +21,14 @@ import butterknife.OnClick;
  * Created by AnhlaMrDuc on 21-Apr-16.
  */
 public class ReceiverFragment extends BaseFragment {
-    private ArrayList<Receiver> arrReceiver;
-    private ListReceiverApdater listReceiverApdater;
+    private ArrayList<Receiver> receivers;
+    private ListReceiverAdapter listReceiverAdapter;
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String receiver = arrReceiver.get(position).getReceiverName();
-            edtReceiver.setText(receiver);
+            String receiverName = receivers.get(position).getReceiverName();
+            edtReceiver.setText(receiverName);
         }
     };
 
@@ -40,21 +41,37 @@ public class ReceiverFragment extends BaseFragment {
     protected void initView() {
         edtReceiver.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
-        listReceiverApdater = new ListReceiverApdater(getContext(), arrReceiver);
-        lvReceiver.setAdapter(listReceiverApdater);
+        listReceiverAdapter = new ListReceiverAdapter(getContext(), receivers);
+        lvReceiver.setAdapter(listReceiverAdapter);
         lvReceiver.setOnItemClickListener(onItemClickListener);
     }
 
     @Override
     protected void handleData() {
-        arrReceiver = getArguments().getParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_MAIN);
+        receivers = getArguments().getParcelableArrayList(MainActivity.LIST_RECEIVER_FROM_MAIN);
+        if (getNewRecevier() != null) {
+            Receiver receiver = getNewRecevier();
+            receivers.add(receiver);
+            getEditor().remove(MainActivity.NEW_RECEIVER);
+            getEditor().commit();
+        }
+        handleList();
+    }
+
+    private void handleList() {
+        ListIterator iterator = receivers.listIterator();
+        while (iterator.hasNext()) {
+            Receiver receiver = (Receiver) iterator.next();
+            if (receiver.getReceiverName().length() == 0) {
+                iterator.remove();
+            }
+        }
     }
 
     @OnClick(R.id.txt_done)
     public void selectReceiverDone() {
-        String receiverName = edtReceiver.getText().toString();
-        getEditor().putString(MainActivity.RECEIVER_NAME, receiverName);
-        getEditor().commit();
+        String receiverName = edtReceiver.getText().toString().trim();
+        setReceiver(receiverName);
         getFragmentManager().popBackStack();
     }
 

@@ -26,77 +26,61 @@
             android:paddingRight="@dimen/margin_5dp"
             android:layout_marginRight="@dimen/margin_5dp"
             android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.6"
+            android:layout_width="@dimen/header_icon_width"
             android:background="@drawable/bg_btn_header_selected"
             android:src="@drawable/ic_arrow_back" />
 
-        <Spinner
-            android:id="@+id/spn_spend_action"
+        <TextView
             style="@style/text_header"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/sp_normal_height"
-            android:layout_weight="4"
-            android:background="@drawable/bg_btn_border"
-            android:dropDownWidth="wrap_content"
-            android:spinnerMode="dropdown"
-            android:gravity="center"></Spinner>
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/spending_item" />
 
         <ImageView
             android:gravity="center"
             android:id="@+id/img_add"
             android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
+            android:layout_width="@dimen/header_icon_width"
             android:background="@drawable/bg_btn_header_selected"
             android:src="@drawable/ic_add_account" />
     </LinearLayout>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/ll_spending"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            style="@style/linear_custom"
-            android:layout_margin="5sp"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <!--description-->
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:layout_weight="0.5"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_search_32"
-                 />
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ll_spending"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+            <!--style="@style/linear_custom"-->
+            <!--android:layout_margin="5sp"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal">-->
+            <!--&lt;!&ndash;description&ndash;&gt;-->
+            <!--<ImageView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="32dp"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@drawable/ic_search_32"-->
+                 <!--/>-->
 
-            <EditText
-                android:id="@+id/edt_search"
-                style="@style/edt_note"
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:layout_margin="5dp"
-                android:layout_weight="4"
-                android:gravity="center_vertical|start"
-                android:hint="@string/search"/>
-        </LinearLayout>
-        <!--<SearchView-->
-            <!--android:id="@+id/search"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:queryHint="@string/search"-->
-            <!--android:background="@drawable/bg_linear_border"-->
-            <!--android:layout_marginTop="@dimen/ll_margin_top"-->
-            <!--android:layout_marginBottom="@dimen/ll_margin_bot"-->
-            <!--android:layout_marginLeft="@dimen/ll_margin_lr_5"-->
-            <!--android:layout_marginRight="@dimen/ll_margin_lr_5"-->
-            <!--android:iconifiedByDefault="false"></SearchView>-->
+            <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/edt_search"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="@style/edt_note"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="32dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_margin="5dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_weight="4"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:gravity="center_vertical|start"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:hint="@string/search"/>&ndash;&gt;-->
+        <!--</LinearLayout>-->
+
 
             <ExpandableListView
                 android:id="@+id/lv_spending"
@@ -105,9 +89,8 @@
                 android:transcriptMode="alwaysScroll"
                 android:groupIndicator="@null"
                 android:layout_marginTop="@dimen/margin_5dp">
-
             </ExpandableListView>
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 </RelativeLayout>
 </LinearLayout>
